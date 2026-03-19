@@ -1234,29 +1234,31 @@ r_twdt: {
   type: 'result',
   severity: 'high',
   title: 'Task Watchdog タイムアウト（TWDT）',
-  cause: 'タスクが 5秒以上（デフォルト）Idle タスクに CPU を返さなかったため、Watchdog がトリップしました。delay() の代わりに vTaskDelay() を使わないとスケジューラに制御が戻りません。',
+  cause: 'タスクが 5秒以上（デフォルト）CPU を占有し続けたため Watchdog がトリップしました。重いループ・ブロッキング処理（通信待ち・ビジーウェイトなど）が原因です。',
   fix: [
-    '長いループ内に vTaskDelay(pdMS_TO_TICKS(10)) を入れてスケジューラに制御を渡す',
-    'delay() を vTaskDelay(pdMS_TO_TICKS(ms)) に置き換える',
-    '重い計算は小分けにして vTaskDelay を挟む'
+    '長いループ内に vTaskDelay(pdMS_TO_TICKS(10)) を入れてスケジューラに CPU を返す',
+    '  delay() と vTaskDelay() の関係：Arduino ESP32 の delay() は内部で vTaskDelay() を呼ぶラッパです。タスクコンテキストで呼べばどちらもコンテキストスイッチが発生します。ただし delay() はミリ秒単位のみで精度が低いため、FreeRTOS タスクでは vTaskDelay(pdMS_TO_TICKS(ms)) を推奨します',
+    '重い計算は小分けにして vTaskDelay を挟む',
+    'while(1){} や for(;;){} のビジーウェイトは必ず vTaskDelay を入れる'
   ],
   code: `// ===================================================
 // 【修正位置】タスク内のループ・重い処理
 // ===================================================
 
-// [NG] NG: delay() はスケジューラに制御を返さない
+// [NG] NG: 重いループで CPU を占有し続ける（WDT の原因）
 void badTask(void *pvParam) {
   while (1) {
-    heavyProcess();
-    delay(1000); // <- WDT がトリップする
+    heavyProcess(); // 重い処理がWDTの原因。delay()の有無は関係ない
+    delay(1000);    // delay()はvTaskDelay()のラッパ→コンテキストスイッチ発生
+                    // しかし heavyProcess() が長すぎるとWDTがトリップする
   }
 }
 
-// [OK] OK: vTaskDelay() を使う
+// [OK] OK: 重い処理を小分けにして vTaskDelay を挟む
 void goodTask(void *pvParam) {
   while (1) {
     heavyProcess();
-    vTaskDelay(pdMS_TO_TICKS(1000)); // <- スケジューラに制御を返す
+    vTaskDelay(pdMS_TO_TICKS(1000)); // FreeRTOSタスクでは vTaskDelay 推奨
   }
 }
 
@@ -1691,7 +1693,7 @@ r_isr_iram: {
   cause: 'Flash キャッシュが無効になる瞬間（NVS 書き込みなど）に ISR が実行されると、Flash 上のコードが読めず Illegal Instruction が発生します。IRAM_ATTR を付けていない関数は Flash 上に配置されます。',
   fix: [
     'ISR 関数自体と ISR から呼ぶ全関数に IRAM_ATTR を付ける',
-    '?? ISR 内での禁止事項：Serial.print（ブロッキング）、delay()（スケジューラ停止）、浮動小数点演算（FPUコンテキスト非保存）、malloc/free（内部Mutex使用）、Wire.read（Mutex使用）',
+    '?? ISR 内での禁止事項：Serial.print（内部Mutex使用）、delay()（ISRコンテキストからvTaskDelayを呼べないためクラッシュ）、浮動小数点演算（FPUコンテキスト非保存）、malloc/free（内部Mutex使用）、Wire.read（Mutex使用）',
     '?? ISR と共有する変数には必ず volatile を付ける（コンパイラのレジスタキャッシュを防ぐ）',
     'ISR から外部ライブラリの関数を直接呼ばない（IRAM_ATTR かどうか不明）',
     'ISR 内でのみ使う定数は DRAM_ATTR を付ける'
@@ -1704,7 +1706,7 @@ r_isr_iram: {
 // [NG] NG: ISR 内での禁止操作
 void badISR() {
   Serial.println("triggered");  // NG: ブロッキング
-  delay(10);                    // NG: スケジューラ停止
+  delay(10);                    // NG: ISRコンテキストからvTaskDelayを呼べない→クラッシュ
   float f = 1.0f / analogRead(34); // NG: FPUコンテキスト破壊の危険
   malloc(64);                   // NG: 内部Mutex使用
 }
@@ -3127,7 +3129,7 @@ r_isr_bad_call: {
   type: 'result',
   severity: 'high',
   title: 'ISR 内での禁止関数呼び出し',
-  cause: 'ISR 内で Serial.print、delay、malloc、Wire.read 等を呼ぶと WDT トリップ・クラッシュが発生します。これらはブロッキング処理または Mutex を使うため ISR から安全に呼べません。',
+  cause: 'ISR 内で Serial.print、delay、malloc、Wire.read 等を呼ぶと WDT トリップ・クラッシュが発生します。delay() は内部で vTaskDelay() を呼びますが ISR コンテキストからは呼び出し禁止のためクラッシュします。Serial.print や Wire.read は内部 Mutex を使うため ISR から呼ぶとデッドロックします。',
   fix: [
     'ISR 内では volatile フラグを立てるだけにする',
     'ISR から xTaskNotifyFromISR / xQueueSendFromISR でタスクに通知する',
@@ -3136,7 +3138,7 @@ r_isr_bad_call: {
   code: `// [NG] NG: ISR 内での禁止関数
 void IRAM_ATTR badISR() {
   Serial.println("triggered"); // <- NG: ブロッキング
-  delay(10);                   // <- NG: スケジューラ停止
+  delay(10);                   // <- NG: ISRコンテキストからvTaskDelay呼び出し禁止
   Wire.read();                 // <- NG: Mutex 使用
 }
 
