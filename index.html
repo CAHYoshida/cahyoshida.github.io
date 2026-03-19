@@ -1114,12 +1114,11 @@ void myTask(void *pvParam) {
 xTaskCreateUniversal(
   myTask,
   "myTask",
-  4096,           // ← バイト数を増やす（余裕を持って 2?4 倍に）
+  4096,    // ← バイト数を増やす（余裕を持って 2?4 倍に）
   NULL,
   1,
-  &myTaskHandle,  // ← ハンドルを保存（診断に使う）
-  tskNO_AFFINITY  // ← コア固定なし（ESP32全チップ対応）
-);`
+  &myTaskHandle  // ← ハンドルを保存（診断に使う）
+, tskNO_AFFINITY);`
 },
 
 r_brownout: {
