@@ -616,26 +616,26 @@ pre {
 </head>
 <body style="background:#0d1117;color:#e6edf3;margin:0">
 <div class="app-header">
-  <h1>  ESP32 ArduinoIDE デバッグ診断ツリー<span class="version-badge">v3.0</span></h1>
+  <h1>&#x1F527; ESP32 ArduinoIDE デバッグ診断ツリー<span class="version-badge">v3.0</span></h1>
   <p>症状を選んで質問に答えると、根本原因・対処法・診断コードが表示されます</p>
 </div>
 
 <!-- Search Panel -->
 <div id="search-panel">
-  <input type="text" id="search-input" placeholder="   キーワード検索（例: スタック、Mutex、ADC、UART...）" autocomplete="off">
-  <button id="search-clear">?</button>
+  <input type="text" id="search-input" placeholder="&#x1F50D;  キーワード検索（例: スタック、Mutex、ADC、UART...）" autocomplete="off">
+  <button id="search-clear">&#x2715;</button>
   <div id="search-results"></div>
 </div>
 
 <!-- Log Analyzer -->
 <div id="log-analyzer">
   <div id="log-analyzer-header" onclick="toggleLogAnalyzer()">
-    <span id="log-analyzer-title">  シリアルログ簡易解析（Guru Meditation / エラーログを貼り付け）</span>
-    <span id="log-analyzer-toggle">▼ 開く</span>
+    <span id="log-analyzer-title">&#x1F4CB; シリアルログ簡易解析（Guru Meditation / エラーログを貼り付け）</span>
+    <span id="log-analyzer-toggle">&#x25BC; 開く</span>
   </div>
   <div id="log-analyzer-body">
     <textarea id="log-input" placeholder="例: Guru Meditation Error: Core 0 panic'ed (LoadProhibited)&#10;Backtrace: 0x4008...&#10;&#10;E (12345) task_wdt: Task watchdog got triggered..."></textarea>
-    <button id="log-analyze-btn" onclick="analyzeLog()">  解析して診断ノードを推薦</button>
+    <button id="log-analyze-btn" onclick="analyzeLog()">&#x1F50D; 解析して診断ノードを推薦</button>
     <div id="log-results"></div>
   </div>
 </div>
@@ -658,7 +658,7 @@ pre {
 <div id="breadcrumb"></div>
 
 <div id="hw-checklist-banner">
-  <h3>?? ハードウェア基本チェックリスト（診断前に確認）</h3>
+  <h3>&#x26A0;&#xFE0F; ハードウェア基本チェックリスト（診断前に確認）</h3>
   <div class="hw-check-grid">
     <label class="hw-check-item"><input type="checkbox"> 電源電圧が 3.3V ±5% 以内か</label>
     <label class="hw-check-item"><input type="checkbox"> USB ケーブルはデータ通信対応か（充電専用NG）</label>
@@ -690,14 +690,14 @@ root: {
   body: 'まず最初に確認：<strong>サードパーティ製ライブラリを一時的に外して（コメントアウト）、標準ライブラリだけで再現しますか？</strong>再現しない場合はライブラリ競合が原因の可能性があります。',
   isRoot: true,
   choices: [
-    { label: '  突然リセット・クラッシュ', emoji: ' ', desc: 'Guru Meditation、Watchdog、スタックオーバーフロー', next: 'cat_crash', color: 'var(--cat1)' },
-    { label: '  変数・データが壊れる', emoji: ' ', desc: '値が突然変わる、スタック破壊、メモリ破壊', next: 'cat_corrupt', color: 'var(--cat2)' },
-    { label: '  不定期に誤動作する', emoji: ' ', desc: 'タイミングによって発生・しない、再現しにくい', next: 'cat_intermittent', color: 'var(--cat3)' },
-    { label: '  タスクが止まる・応答しない', emoji: ' ', desc: 'ハング、デッドロック、優先度逆転', next: 'cat_hang', color: 'var(--cat4)' },
-    { label: ' ? 時間経過で壊れていく', emoji: ' ?', desc: 'ヒープ枯渇、スタック侵食、長時間動作で劣化', next: 'cat_degradation', color: 'var(--cat5)' },
-    { label: '  通信が不安定', emoji: ' ', desc: 'Wi-Fi/I2C/SPI/UART/BLE の通信エラー', next: 'cat_comms', color: 'var(--cat6)' },
-    { label: '  ハードウェア起因を疑う', emoji: ' ', desc: '電源・ノイズ・ピン・GPIO・熱・環境系', next: 'cat_hw', color: 'var(--cat7)' },
-    { label: '  ライブラリ競合が疑われる', emoji: ' ', desc: '特定ライブラリ追加後から発生、最小構成では動く', next: 'r_lib_conflict', color: '#a8dadc' },
+    { label: '&#x1F4A5; 突然リセット・クラッシュ', emoji: '&#x1F4A5;', desc: 'Guru Meditation、Watchdog、スタックオーバーフロー', next: 'cat_crash', color: 'var(--cat1)' },
+    { label: '&#x1F9E8; 変数・データが壊れる', emoji: '&#x1F9E8;', desc: '値が突然変わる、スタック破壊、メモリ破壊', next: 'cat_corrupt', color: 'var(--cat2)' },
+    { label: '&#x1F3B2; 不定期に誤動作する', emoji: '&#x1F3B2;', desc: 'タイミングによって発生・しない、再現しにくい', next: 'cat_intermittent', color: 'var(--cat3)' },
+    { label: '&#x1F9F1; タスクが止まる・応答しない', emoji: '&#x1F9F1;', desc: 'ハング、デッドロック、優先度逆転', next: 'cat_hang', color: 'var(--cat4)' },
+    { label: '&#x1F573;&#xFE0F; 時間経過で壊れていく', emoji: '&#x1F573;&#xFE0F;', desc: 'ヒープ枯渇、スタック侵食、長時間動作で劣化', next: 'cat_degradation', color: 'var(--cat5)' },
+    { label: '&#x1F4E1; 通信が不安定', emoji: '&#x1F4E1;', desc: 'Wi-Fi/I2C/SPI/UART/BLE の通信エラー', next: 'cat_comms', color: 'var(--cat6)' },
+    { label: '&#x1F50C; ハードウェア起因を疑う', emoji: '&#x1F50C;', desc: '電源・ノイズ・ピン・GPIO・熱・環境系', next: 'cat_hw', color: 'var(--cat7)' },
+    { label: '&#x1F4E6; ライブラリ競合が疑われる', emoji: '&#x1F4E6;', desc: '特定ライブラリ追加後から発生、最小構成では動く', next: 'r_lib_conflict', color: '#a8dadc' },
   ]
 },
 
@@ -706,7 +706,7 @@ root: {
 // ---------------------------------------------------------
 cat_crash: {
   type: 'question',
-  title: '  リセット・クラッシュの詳細',
+  title: '&#x1F4A5; リセット・クラッシュの詳細',
   body: 'シリアルモニタに表示されるメッセージを確認してください。どのような内容ですか？',
   choices: [
     { label: 'Guru Meditation Error が表示される', next: 'crash_guru' },
@@ -755,7 +755,7 @@ crash_silent: {
 // ---------------------------------------------------------
 cat_corrupt: {
   type: 'question',
-  title: '  データ破壊の詳細',
+  title: '&#x1F9E8; データ破壊の詳細',
   body: 'どのような状況でデータが壊れますか？',
   choices: [
     { label: '複数タスク・ISR から同じ変数に書き込む', next: 'corrupt_race' },
@@ -792,7 +792,7 @@ corrupt_overflow: {
 // ---------------------------------------------------------
 cat_intermittent: {
   type: 'question',
-  title: '  不定期誤動作の詳細',
+  title: '&#x1F3B2; 不定期誤動作の詳細',
   body: '発生タイミングや条件で絞り込みます。',
   choices: [
     { label: '特定のタスク組み合わせで発生する', next: 'intermittent_task' },
@@ -830,7 +830,7 @@ intermittent_isr: {
 // ---------------------------------------------------------
 cat_hang: {
   type: 'question',
-  title: '  タスクハング・応答なしの詳細',
+  title: '&#x1F9F1; タスクハング・応答なしの詳細',
   body: 'どのような状況で止まりますか？',
   choices: [
     { label: '複数のタスクが互いのリソースを待っている（デッドロック）', next: 'r_deadlock' },
@@ -867,7 +867,7 @@ hang_setup: {
 // ---------------------------------------------------------
 cat_degradation: {
   type: 'question',
-  title: ' ? 時間経過による劣化の詳細',
+  title: '&#x1F573;&#xFE0F; 時間経過による劣化の詳細',
   body: '時間が経つにつれて何が悪化しますか？',
   choices: [
     { label: 'ヒープが減り続ける（メモリリーク）', next: 'degradation_heap' },
@@ -904,7 +904,7 @@ degradation_perf: {
 // ---------------------------------------------------------
 cat_comms: {
   type: 'question',
-  title: '  通信の問題 - プロトコル選択',
+  title: '&#x1F4E1; 通信の問題 - プロトコル選択',
   body: 'どの通信プロトコルで問題が発生していますか？',
   choices: [
     { label: 'Wi-Fi（TCP/UDP/HTTP/MQTT）', next: 'comms_wifi' },
@@ -1002,7 +1002,7 @@ comms_ble: {
 // ---------------------------------------------------------
 cat_hw: {
   type: 'question',
-  title: '  ハードウェア起因の問題',
+  title: '&#x1F50C; ハードウェア起因の問題',
   body: '疑われるカテゴリを選んでください。',
   choices: [
     { label: '電源系（電圧不安定・USB ケーブル・パスコン）', next: 'hw_power' },
@@ -1078,17 +1078,17 @@ r_stackoverflow: {
   cause: 'タスクのスタックサイズが不足しています。ローカル変数・関数呼び出しのネストがスタック上限を超えています。',
   fix: [
     'xTaskCreateUniversal の第4引数（スタックサイズ）を増やす（単位：バイト）',
-    '?? 重要：uxTaskGetStackHighWaterMark() の戻り値は「バイト数」です。例：返値 256 → 残り 256バイト。256バイト（=戻り値256）未満は危険域',
-    '  ESP32固有の注意：標準 FreeRTOS の uxTaskGetStackHighWaterMark はワード数を返しますが、ESP-IDF（Arduino ESP32 BSP）の実装はスタックポインタ差分をそのままバイト数で返します。他のマイコン（STM32等）から移植する場合は × 4 の換算が不要になります',
-    ' 【Tips】単位の歴史的背景：現在の Arduino ESP32 Core (v2.x以降) では xTaskCreateUniversal の引数はバイト単位ですが、古いバージョンや他の FreeRTOS 環境ではワード単位（1ワード=4バイト）で指定する場合がありました。古いプロジェクトを移植する際は設定値が 4 倍小さくなっていないか確認してください',
+    '&#x26A0;&#xFE0F; 重要：uxTaskGetStackHighWaterMark() の戻り値は「バイト数」です。例：返値 256 &#x2192; 残り 256バイト。256バイト（=戻り値256）未満は危険域',
+    '&#x1F4CC; ESP32固有の注意：標準 FreeRTOS の uxTaskGetStackHighWaterMark はワード数を返しますが、ESP-IDF（Arduino ESP32 BSP）の実装はスタックポインタ差分をそのままバイト数で返します。他のマイコン（STM32等）から移植する場合は × 4 の換算が不要になります',
+    '&#x1F4A1;【Tips】単位の歴史的背景：現在の Arduino ESP32 Core (v2.x以降) では xTaskCreateUniversal の引数はバイト単位ですが、古いバージョンや他の FreeRTOS 環境ではワード単位（1ワード=4バイト）で指定する場合がありました。古いプロジェクトを移植する際は設定値が 4 倍小さくなっていないか確認してください',
     'uxTaskGetStackHighWaterMark(handle) で最小残量を確認する',
     '大きな配列・構造体はグローバルまたは static にする',
     '再帰呼び出しを避ける'
   ],
-  info: '【中級者向け・ESP32固有】uxTaskGetStackHighWaterMark() はスタック領域をウォーク（ループでスキャン）します。スタックを塗りつぶした最高水位を返すので「HighWaterMark」です。?? 標準 FreeRTOS はワード数を返しますが、ESP-IDF の実装（tasks.c の prvTaskCheckFreeStackSpace）はポインタ差分をそのままバイト数で返します。Arduino ESP32 BSP でも同様にバイト数です（× 4 不要）。256バイト未満は危険域。スタックは xTaskCreateUniversal 時に DRAM に確保されるため、PSRAM には置けません。',
+  info: '【中級者向け・ESP32固有】uxTaskGetStackHighWaterMark() はスタック領域をウォーク（ループでスキャン）します。スタックを塗りつぶした最高水位を返すので「HighWaterMark」です。&#x26A0;&#xFE0F; 標準 FreeRTOS はワード数を返しますが、ESP-IDF の実装（tasks.c の prvTaskCheckFreeStackSpace）はポインタ差分をそのままバイト数で返します。Arduino ESP32 BSP でも同様にバイト数です（× 4 不要）。256バイト未満は危険域。スタックは xTaskCreateUniversal 時に DRAM に確保されるため、PSRAM には置けません。',
   code: `// ===================================================
 // 【挿入位置】タスク関数内の vTaskDelay の直前
-// ?? 戻り値はバイト数（× 4 は不要）
+// &#x26A0;&#xFE0F; 戻り値はバイト数（× 4 は不要）
 // デバッグ用：削除可能
 // ===================================================
 
@@ -1096,7 +1096,7 @@ void myTask(void *pvParam) {
   while (1) {
     // --- 既存の処理 ---
 
-    // ↓ ここに挿入 ---------------------------------
+    // &#x2193; ここに挿入 ---------------------------------
     // デバッグ用：削除可能
     UBaseType_t waterMarkBytes = uxTaskGetStackHighWaterMark(NULL); // 戻り値はバイト数
     Serial.printf("[STACK] %s: min remaining = %u bytes\\n",
@@ -1114,10 +1114,10 @@ void myTask(void *pvParam) {
 xTaskCreateUniversal(
   myTask,
   "myTask",
-  4096,    // ← バイト数を増やす（余裕を持って 2?4 倍に）
+  4096,    // &#x2190; バイト数を増やす（余裕を持って 2?4 倍に）
   NULL,
   1,
-  &myTaskHandle  // ← ハンドルを保存（診断に使う）
+  &myTaskHandle  // &#x2190; ハンドルを保存（診断に使う）
 , tskNO_AFFINITY);`
 },
 
@@ -1140,7 +1140,7 @@ r_brownout: {
 void setup() {
   Serial.begin(115200);
 
-  // ↓ ここに挿入 ---------------------------------
+  // &#x2193; ここに挿入 ---------------------------------
   // デバッグ用：削除可能
   esp_reset_reason_t reason = esp_reset_reason();
   const char* names[] = {
@@ -1153,7 +1153,7 @@ void setup() {
   }
   // ---------------------------------------------
 
-  // ↓ 既存の初期化はここより下（変更不要）
+  // &#x2193; 既存の初期化はここより下（変更不要）
 }`
 },
 
@@ -1173,7 +1173,7 @@ r_null_ptr: {
 // 理由：NULL チェックなしで使うと即 Guru Meditation
 // ===================================================
 
-// ↓ ここに挿入 -------------------------------------
+// &#x2193; ここに挿入 -------------------------------------
 void* buf = malloc(1024);
 if (buf == NULL) {
   Serial.println("[ERR] malloc failed! Heap exhausted?");
@@ -1194,7 +1194,7 @@ r_task_return: {
   type: 'result',
   severity: 'high',
   title: 'タスク関数からの不正 return',
-  cause: 'FreeRTOS タスク関数から return すると、通常の ESP32 BSP では prvTaskExitError → configASSERT(pdFALSE) → Guru Meditation Error → リセット となります。ただし configASSERT が無効化されていると「タスクが消えるだけ」または「ハング」になり、症状が見えにくくなります。',
+  cause: 'FreeRTOS タスク関数から return すると、通常の ESP32 BSP では prvTaskExitError &#x2192; configASSERT(pdFALSE) &#x2192; Guru Meditation Error &#x2192; リセット となります。ただし configASSERT が無効化されていると「タスクが消えるだけ」または「ハング」になり、症状が見えにくくなります。',
   fix: [
     '意図的にタスクを終了させる場合は vTaskDelete(NULL) を呼んでから return する',
     'while(1) の中でタスクのメインループを記述する設計にする',
@@ -1207,13 +1207,13 @@ r_task_return: {
 // OK：vTaskDelete(NULL) を呼ぶ
 // ===================================================
 
-// ? NG パターン
+// &#x274C; NG パターン
 void badTask(void *pvParam) {
   doSomething();
-  return; // → Guru Meditation or サイレントハング
+  return; // &#x2192; Guru Meditation or サイレントハング
 }
 
-// ? OK パターン1：永続タスク
+// &#x2705; OK パターン1：永続タスク
 void goodTask1(void *pvParam) {
   while (1) {
     doSomething();
@@ -1222,7 +1222,7 @@ void goodTask1(void *pvParam) {
   // ここには到達しない
 }
 
-// ? OK パターン2：一度だけ実行して終了
+// &#x2705; OK パターン2：一度だけ実行して終了
 void goodTask2(void *pvParam) {
   doSomethingOnce();
   vTaskDelete(NULL); // 自分自身を正常に削除
@@ -1244,19 +1244,19 @@ r_twdt: {
 // 【修正位置】タスク内のループ・重い処理
 // ===================================================
 
-// ? NG: delay() はスケジューラに制御を返さない
+// &#x274C; NG: delay() はスケジューラに制御を返さない
 void badTask(void *pvParam) {
   while (1) {
     heavyProcess();
-    delay(1000); // ← WDT がトリップする
+    delay(1000); // &#x2190; WDT がトリップする
   }
 }
 
-// ? OK: vTaskDelay() を使う
+// &#x2705; OK: vTaskDelay() を使う
 void goodTask(void *pvParam) {
   while (1) {
     heavyProcess();
-    vTaskDelay(pdMS_TO_TICKS(1000)); // ← スケジューラに制御を返す
+    vTaskDelay(pdMS_TO_TICKS(1000)); // &#x2190; スケジューラに制御を返す
   }
 }
 
@@ -1290,9 +1290,9 @@ r_iwdt: {
 
 TaskHandle_t workerHandle = NULL;
 
-// ? 正しい ISR パターン：通知のみ行う
+// &#x2705; 正しい ISR パターン：通知のみ行う
 void IRAM_ATTR myISR() {
-  // ↓ ISR の中身のみ修正（関数名・attachInterrupt は変えない）
+  // &#x2193; ISR の中身のみ修正（関数名・attachInterrupt は変えない）
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   vTaskNotifyGiveFromISR(workerHandle, &xHigherPriorityTaskWoken);
   portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
@@ -1327,7 +1327,7 @@ r_wdt_generic: {
 // ===================================================
 void setup() {
   Serial.begin(115200);
-  // ↓ ここに挿入
+  // &#x2193; ここに挿入
   // デバッグ用：削除可能
   esp_reset_reason_t r = esp_reset_reason();
   Serial.printf("[RESET] reason=%d (%s)\\n", r,
@@ -1342,7 +1342,7 @@ r_reset_reason: {
   cause: '無言でリセットする原因を絞り込むために、起動直後にリセット理由を記録します。',
   fix: [
     'esp_reset_reason() の値でリセット理由を特定する',
-    'BROWNOUT → 電源問題、PANIC → コードバグ、WDT → CPU占有'
+    'BROWNOUT &#x2192; 電源問題、PANIC &#x2192; コードバグ、WDT &#x2192; CPU占有'
   ],
   code: `// ===================================================
 // 【挿入位置】setup() の Serial.begin() の直後・最初の処理
@@ -1353,7 +1353,7 @@ void setup() {
   Serial.begin(115200);
   delay(100); // シリアル安定待ち
 
-  // ↓ ここに挿入 ---------------------------------
+  // &#x2193; ここに挿入 ---------------------------------
   // デバッグ用：削除可能
   esp_reset_reason_t reason = esp_reset_reason();
   const char* resetNames[] = {
@@ -1367,7 +1367,7 @@ void setup() {
   Serial.printf("[HEAP] Free at boot: %u bytes\\n", ESP.getFreeHeap());
   // ---------------------------------------------
 
-  // ↓ 既存の初期化はここより下（変更不要）
+  // &#x2193; 既存の初期化はここより下（変更不要）
 }`
 },
 
@@ -1393,7 +1393,7 @@ SemaphoreHandle_t mtx = NULL; // NULL で初期化必須
 void setup() {
   Serial.begin(115200);
 
-  // ↓ ここに挿入 ---------------------------------
+  // &#x2193; ここに挿入 ---------------------------------
   mtx = xSemaphoreCreateMutex();
   if (mtx == NULL) {
     Serial.println("[ERR] Mutex create failed!");
@@ -1411,11 +1411,11 @@ void setup() {
 // ===================================================
 void taskA(void *pvParam) {
   while (1) {
-    // ↓ Take → 処理 → Give のペア（必ずセットで）
+    // &#x2193; Take &#x2192; 処理 &#x2192; Give のペア（必ずセットで）
     if (xSemaphoreTake(mtx, pdMS_TO_TICKS(1000)) == pdTRUE) {
       // 共有リソースへのアクセス（ここだけ修正）
       sharedData++;
-      xSemaphoreGive(mtx); // ← 絶対に忘れない
+      xSemaphoreGive(mtx); // &#x2190; 絶対に忘れない
     } else {
       Serial.println("[WARN] Mutex timeout! Possible deadlock?");
     }
@@ -1423,11 +1423,11 @@ void taskA(void *pvParam) {
   }
 }
 
-// ? よくある NG パターン
-// 1. NULL のまま使う    → xSemaphoreTake(NULL, ...) → クラッシュ
-// 2. Give を忘れる     → デッドロック
-// 3. early return で Give 忘れ → デッドロック
-// 4. xTaskCreateUniversal より後に生成 → タスクが NULL の Mutex を使う`
+// &#x274C; よくある NG パターン
+// 1. NULL のまま使う    &#x2192; xSemaphoreTake(NULL, ...) &#x2192; クラッシュ
+// 2. Give を忘れる     &#x2192; デッドロック
+// 3. early return で Give 忘れ &#x2192; デッドロック
+// 4. xTaskCreateUniversal より後に生成 &#x2192; タスクが NULL の Mutex を使う`
 },
 
 r_race_memory: {
@@ -1494,7 +1494,7 @@ void setup() {
   Serial.begin(115200);
   Wire.begin(21, 22);
 
-  // ↓ ここに挿入 ---------------------------------
+  // &#x2193; ここに挿入 ---------------------------------
   i2cMtx = xSemaphoreCreateMutex();
   if (i2cMtx == NULL) {
     Serial.println("[ERR] I2C Mutex create failed!");
@@ -1593,7 +1593,7 @@ portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
 
 // ISR：最小限の処理のみ
 void IRAM_ATTR myISR() {
-  // ↓ ISR の内部のみ修正
+  // &#x2193; ISR の内部のみ修正
   portENTER_CRITICAL_ISR(&mux);
   isrFlag = true;
   isrData = readHardwareRegister();
@@ -1630,19 +1630,19 @@ r_volatile_missing: {
   code: `// ===================================================
 // 【修正位置】グローバル変数の宣言部分
 // -------------------------------------------------
-// ↓ 既存のコードを修正（volatile を追加するだけ）
+// &#x2193; 既存のコードを修正（volatile を追加するだけ）
 // ===================================================
 
-// ? NG: volatile なし
+// &#x274C; NG: volatile なし
 bool isrTriggered = false;
 uint32_t sensorValue = 0;
 
-// ? OK: volatile あり
+// &#x2705; OK: volatile あり
 volatile bool isrTriggered = false;
 volatile uint32_t sensorValue = 0;
 
 // 注意：uint32_t の Read-Modify-Write はアトミックではない
-// → インクリメント等は portENTER_CRITICAL でも保護すること`
+// &#x2192; インクリメント等は portENTER_CRITICAL でも保護すること`
 },
 
 r_stack_smash: {
@@ -1659,21 +1659,21 @@ r_stack_smash: {
 // 【修正位置】タスク関数内の大きなローカル変数宣言
 // ===================================================
 
-// ? NG: スタック上に大きな配列（スタック破壊の元凶）
+// &#x274C; NG: スタック上に大きな配列（スタック破壊の元凶）
 void badTask(void *pv) {
-  uint8_t buf[2048]; // ← 2KB がスタックに乗る → 破壊
+  uint8_t buf[2048]; // &#x2190; 2KB がスタックに乗る &#x2192; 破壊
   process(buf);
   vTaskDelay(pdMS_TO_TICKS(100));
 }
 
-// ? OK パターン1: static にする（スタックに乗らない）
+// &#x2705; OK パターン1: static にする（スタックに乗らない）
 void goodTask1(void *pv) {
-  static uint8_t buf[2048]; // static → BSS セクションに配置
+  static uint8_t buf[2048]; // static &#x2192; BSS セクションに配置
   process(buf);
   vTaskDelay(pdMS_TO_TICKS(100));
 }
 
-// ? OK パターン2: ヒープに確保する
+// &#x2705; OK パターン2: ヒープに確保する
 void goodTask2(void *pv) {
   uint8_t *buf = (uint8_t*)malloc(2048);
   if (buf) {
@@ -1691,8 +1691,8 @@ r_isr_iram: {
   cause: 'Flash キャッシュが無効になる瞬間（NVS 書き込みなど）に ISR が実行されると、Flash 上のコードが読めず Illegal Instruction が発生します。IRAM_ATTR を付けていない関数は Flash 上に配置されます。',
   fix: [
     'ISR 関数自体と ISR から呼ぶ全関数に IRAM_ATTR を付ける',
-    '?? ISR 内での禁止事項：Serial.print（ブロッキング）、delay()（スケジューラ停止）、浮動小数点演算（FPUコンテキスト非保存）、malloc/free（内部Mutex使用）、Wire.read（Mutex使用）',
-    '?? ISR と共有する変数には必ず volatile を付ける（コンパイラのレジスタキャッシュを防ぐ）',
+    '&#x26A0;&#xFE0F; ISR 内での禁止事項：Serial.print（ブロッキング）、delay()（スケジューラ停止）、浮動小数点演算（FPUコンテキスト非保存）、malloc/free（内部Mutex使用）、Wire.read（Mutex使用）',
+    '&#x26A0;&#xFE0F; ISR と共有する変数には必ず volatile を付ける（コンパイラのレジスタキャッシュを防ぐ）',
     'ISR から外部ライブラリの関数を直接呼ばない（IRAM_ATTR かどうか不明）',
     'ISR 内でのみ使う定数は DRAM_ATTR を付ける'
   ],
@@ -1701,7 +1701,7 @@ r_isr_iram: {
 // 【修正位置】ISR 関数の宣言（IRAM_ATTR を追加）
 // ===================================================
 
-// ? NG: ISR 内での禁止操作
+// &#x274C; NG: ISR 内での禁止操作
 void badISR() {
   Serial.println("triggered");  // NG: ブロッキング
   delay(10);                    // NG: スケジューラ停止
@@ -1709,7 +1709,7 @@ void badISR() {
   malloc(64);                   // NG: 内部Mutex使用
 }
 
-// ? OK: 全呼び出し経路に IRAM_ATTR + volatile
+// &#x2705; OK: 全呼び出し経路に IRAM_ATTR + volatile
 volatile bool isrFlag = false;  // volatile 必須
 volatile uint32_t isrTs = 0;    // 共有変数は volatile
 
@@ -1743,12 +1743,12 @@ r_array_oob: {
 #define BUF_SIZE 64
 uint8_t buf[BUF_SIZE];
 
-// ? NG: 境界チェックなし
+// &#x274C; NG: 境界チェックなし
 void writeToBuf(int idx, uint8_t val) {
   buf[idx] = val; // idx >= 64 だとメモリ破壊
 }
 
-// ? OK: 境界チェックあり
+// &#x2705; OK: 境界チェックあり
 void writeToBufSafe(int idx, uint8_t val) {
   if (idx < 0 || idx >= BUF_SIZE) {
     // デバッグ用：削除可能
@@ -1805,7 +1805,7 @@ r_deadlock: {
   title: 'デッドロック',
   cause: 'タスク A が Mutex X を持ちながら Mutex Y を待ち、タスク B が Y を持ちながら X を待つ循環待ち状態です。両タスクとも永遠に待ち続けます。',
   fix: [
-    '全タスクで Mutex を取得する順序を統一する（Mutex X → Mutex Y の順ならば必ずその順で）',
+    '全タスクで Mutex を取得する順序を統一する（Mutex X &#x2192; Mutex Y の順ならば必ずその順で）',
     'タイムアウト付きの xSemaphoreTake を使い、デッドロック検出ログを出す',
     'Mutex のネスト（1つ保持しながら別の Mutex を取得）を避ける設計にする'
   ],
@@ -1826,18 +1826,18 @@ void setup() {
   xTaskCreateUniversal(taskB, "B", 2048, NULL, 1, NULL, tskNO_AFFINITY);
 }
 
-// ? NG: 取得順序が逆でデッドロック
+// &#x274C; NG: 取得順序が逆でデッドロック
 void taskA(void *pv) {
   while(1) {
-    xSemaphoreTake(mtxA, portMAX_DELAY); // A → B の順
-    xSemaphoreTake(mtxB, portMAX_DELAY); // ← B 側は B→A でデッドロック
+    xSemaphoreTake(mtxA, portMAX_DELAY); // A &#x2192; B の順
+    xSemaphoreTake(mtxB, portMAX_DELAY); // &#x2190; B 側は B&#x2192;A でデッドロック
     /* 処理 */
     xSemaphoreGive(mtxB); xSemaphoreGive(mtxA);
     vTaskDelay(10);
   }
 }
 
-// ? OK: 全タスクで取得順序を統一（A → B）
+// &#x2705; OK: 全タスクで取得順序を統一（A &#x2192; B）
 void taskB_fixed(void *pv) {
   while(1) {
     // タイムアウト付きで Take（デッドロック検出）
@@ -1878,7 +1878,7 @@ SemaphoreHandle_t sem = NULL; // NULL で初期化必須
 void setup() {
   Serial.begin(115200);
 
-  // ↓ ここに挿入 ---------------------------------
+  // &#x2193; ここに挿入 ---------------------------------
   // Mutex（相互排除）
   sem = xSemaphoreCreateMutex();
   // または バイナリ Semaphore（タスク同期・ISR通知）
@@ -1892,17 +1892,17 @@ void setup() {
   xTaskCreateUniversal(workerTask, "worker", 2048, NULL, 1, NULL, tskNO_AFFINITY);
 }
 
-// ? NG パターン集
+// &#x274C; NG パターン集
 void ngPatterns() {
-  // 1. NULL チェックなし → NULL で Take → クラッシュ
+  // 1. NULL チェックなし &#x2192; NULL で Take &#x2192; クラッシュ
   // xSemaphoreTake(sem, portMAX_DELAY); // sem が NULL の場合
 
   // 2. Give 忘れ
   // xSemaphoreTake(sem, 1000);
-  // if (error) return; // ← Give を忘れてデッドロック
+  // if (error) return; // &#x2190; Give を忘れてデッドロック
 }
 
-// ? OK パターン
+// &#x2705; OK パターン
 void safeUse(void *pv) {
   while(1) {
     if (xSemaphoreTake(sem, pdMS_TO_TICKS(1000)) == pdTRUE) {
@@ -1936,7 +1936,7 @@ TaskHandle_t task2Handle = NULL;
 
 void setup() {
   Serial.begin(115200);
-  // ↓ xTaskCreateUniversal の第5引数にハンドルを渡す（既存コードを修正）
+  // &#x2193; xTaskCreateUniversal の第5引数にハンドルを渡す（既存コードを修正）
   xTaskCreateUniversal(task1, "task1", 4096, NULL, 1, &task1Handle, tskNO_AFFINITY);
   xTaskCreateUniversal(task2, "task2", 4096, NULL, 1, &task2Handle, tskNO_AFFINITY);
 }
@@ -1998,7 +1998,7 @@ SemaphoreHandle_t resMtx = NULL;
 void setup() {
   Serial.begin(115200);
 
-  resMtx = xSemaphoreCreateMutex(); // ← Mutex を使う（優先度継承あり）
+  resMtx = xSemaphoreCreateMutex(); // &#x2190; Mutex を使う（優先度継承あり）
   if (!resMtx) { while(1) delay(100); }
 
   xTaskCreateUniversal(highPrioTask, "high", 2048, NULL, 10, NULL, tskNO_AFFINITY); // 高優先度
@@ -2033,7 +2033,7 @@ r_heap_leak: {
 // ===================================================
 
 void loop() {
-  // ↓ ここに挿入 ---------------------------------
+  // &#x2193; ここに挿入 ---------------------------------
   // デバッグ用：削除可能
   static uint32_t lastHeap = 0;
   uint32_t freeHeap = ESP.getFreeHeap();
@@ -2044,10 +2044,10 @@ void loop() {
   lastHeap = freeHeap;
   // ---------------------------------------------
 
-  // ↓ 既存のコードはここより下（変更不要）
+  // &#x2193; 既存のコードはここより下（変更不要）
 }
 
-// ? free 漏れなしパターン
+// &#x2705; free 漏れなしパターン
 uint8_t* safeMalloc(size_t size) {
   uint8_t* p = (uint8_t*)malloc(size);
   if (!p) {
@@ -2081,14 +2081,14 @@ r_heap_leak_cpp: {
 // 【修正位置】new/delete の使用箇所
 // ===================================================
 
-// ? NG: new で確保して delete を忘れる
+// &#x274C; NG: new で確保して delete を忘れる
 void badAlloc() {
   MyClass* obj = new MyClass();
   obj->doWork();
-  // delete obj; ← 忘れる → リーク
+  // delete obj; &#x2190; 忘れる &#x2192; リーク
 }
 
-// ? OK パターン1: 明示的に delete
+// &#x2705; OK パターン1: 明示的に delete
 void goodAlloc() {
   MyClass* obj = new MyClass();
   if (!obj) return;
@@ -2097,7 +2097,7 @@ void goodAlloc() {
   obj = nullptr;
 }
 
-// ? OK パターン2: 配列は delete[]
+// &#x2705; OK パターン2: 配列は delete[]
 void goodArrayAlloc() {
   uint8_t* arr = new uint8_t[256];
   if (!arr) return;
@@ -2121,7 +2121,7 @@ r_task_leak: {
 // 【挿入位置】タスク生成・削除の管理
 // ===================================================
 
-// ? タスクを動的に生成・削除する場合
+// &#x2705; タスクを動的に生成・削除する場合
 TaskHandle_t dynamicTaskHandle = NULL;
 
 void startDynamicTask() {
@@ -2156,7 +2156,7 @@ r_heap_fragment: {
   title: 'ヒープの断片化',
   cause: '小さな malloc/free を繰り返すとヒープの空き領域が細切れになり、合計空き容量があっても大きなブロックが確保できなくなります。Arduino の String クラスは特に断片化を引き起こしやすい原因です。',
   fix: [
-    '?? String クラスの += 演算や + 演算子は内部でメモリの再確保を繰り返します。事前に str.reserve(N) で領域を確保することで再アロケーションを防げます',
+    '&#x26A0;&#xFE0F; String クラスの += 演算や + 演算子は内部でメモリの再確保を繰り返します。事前に str.reserve(N) で領域を確保することで再アロケーションを防げます',
     '根本解決：String の多用を避け、char 配列 + snprintf に置き換える',
     '固定サイズのオブジェクトプールを作る（同じサイズの malloc/free を繰り返す）',
     'ESP.getMinFreeHeap() と ESP.getMaxAllocHeap() で断片化度を確認する',
@@ -2169,7 +2169,7 @@ r_heap_fragment: {
 // ===================================================
 
 void loop() {
-  // ↓ ここに挿入 ---------------------------------
+  // &#x2193; ここに挿入 ---------------------------------
   // デバッグ用：削除可能
   static uint32_t tick = 0;
   if (++tick % 60 == 0) { // 60回に1回（約60秒ごと）
@@ -2185,14 +2185,14 @@ void loop() {
   }
   // ---------------------------------------------
 
-  // ↓ 既存のコードはここより下（変更不要）
+  // &#x2193; 既存のコードはここより下（変更不要）
   delay(1000);
 }
 
 // String.reserve() で断片化を軽減する例
 void buildMessage() {
   String msg;
-  msg.reserve(128); // ← 最初にバッファ確保（再アロケーション防止）
+  msg.reserve(128); // &#x2190; 最初にバッファ確保（再アロケーション防止）
   msg += "Temp: ";
   msg += temperature;
   msg += " Hum: ";
@@ -2222,7 +2222,7 @@ r_string_frag: {
 // 【修正位置】String を使っている箇所
 // ===================================================
 
-// ? NG: String の多重連結（ヒープを何度も確保・解放）
+// &#x274C; NG: String の多重連結（ヒープを何度も確保・解放）
 void badString() {
   String msg = "Temp: ";
   msg += temperature;     // 確保
@@ -2231,7 +2231,7 @@ void badString() {
   Serial.println(msg);
 }
 
-// ? OK: char 配列 + snprintf（1回だけ確保）
+// &#x2705; OK: char 配列 + snprintf（1回だけ確保）
 void goodString() {
   char msg[64]; // スタック上に固定長で確保
   snprintf(msg, sizeof(msg), "Temp: %.1f Hum: %.1f",
@@ -2239,7 +2239,7 @@ void goodString() {
   Serial.println(msg);
 }
 
-// ? Serial.printf を直接使う（最もシンプル）
+// &#x2705; Serial.printf を直接使う（最もシンプル）
 void bestString() {
   Serial.printf("Temp: %.1f Hum: %.1f\\n", temperature, humidity);
 }`
@@ -2320,9 +2320,9 @@ void myTask(void *pv) {
 // GPIO でタイミングをロジアナ計測する方法
 // #define DBG_PIN 2
 // void criticalSection() {
-//   digitalWrite(DBG_PIN, HIGH); // ← ここから
+//   digitalWrite(DBG_PIN, HIGH); // &#x2190; ここから
 //   heavyWork();
-//   digitalWrite(DBG_PIN, LOW);  // ← ここまで
+//   digitalWrite(DBG_PIN, LOW);  // &#x2190; ここまで
 // }`
 },
 
@@ -2343,7 +2343,7 @@ r_wifi_connect: {
 void setup() {
   Serial.begin(115200);
 
-  // ↓ ここに挿入 ---------------------------------
+  // &#x2193; ここに挿入 ---------------------------------
   // Wi-Fi イベントハンドラ登録（デバッグ用：削除可能）
   WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t info) {
     switch(event) {
@@ -2384,7 +2384,7 @@ WiFiUDP udp; // グローバルに1つだけ宣言（ソケットリーク防止
 
 void setup() {
   Serial.begin(115200);
-  WiFi.setSleep(false); // ← ARP タイムアウト防止に重要
+  WiFi.setSleep(false); // &#x2190; ARP タイムアウト防止に重要
   WiFi.begin(SSID, PASS);
   while (WiFi.status() != WL_CONNECTED) delay(500);
 
@@ -2392,7 +2392,7 @@ void setup() {
 }
 
 void loop() {
-  // ↓ ここに挿入: UDP キープアライブ（デバッグ用）
+  // &#x2193; ここに挿入: UDP キープアライブ（デバッグ用）
   static uint32_t lastKeepalive = 0;
   if (millis() - lastKeepalive > 30000) { // 30秒ごと
     udp.beginPacket(REMOTE_IP, REMOTE_PORT);
@@ -2419,10 +2419,10 @@ r_udp_sleep: {
 // ===================================================
 void setup() {
   Serial.begin(115200);
-  WiFi.setSleep(false); // ← ここに挿入（デフォルトは Modem Sleep）
+  WiFi.setSleep(false); // &#x2190; ここに挿入（デフォルトは Modem Sleep）
   WiFi.begin(SSID, PASS);
   while (WiFi.status() != WL_CONNECTED) delay(500);
-  // ↓ 既存のコードはここより下（変更不要）
+  // &#x2193; 既存のコードはここより下（変更不要）
 }`
 },
 
@@ -2439,21 +2439,21 @@ r_udp_leak: {
 // 【修正位置】WiFiUDP の宣言と begin() の位置
 // ===================================================
 
-// ? OK: グローバルに1つだけ（ファイル先頭）
+// &#x2705; OK: グローバルに1つだけ（ファイル先頭）
 WiFiUDP udp;
 
 void setup() {
   WiFi.begin(SSID, PASS);
   while (WiFi.status() != WL_CONNECTED) delay(500);
-  udp.begin(LOCAL_PORT); // ← setup() で1回だけ
+  udp.begin(LOCAL_PORT); // &#x2190; setup() で1回だけ
 }
 
 void loop() {
-  // ? NG: loop() 内で begin() を繰り返す → ソケットリーク
-  // WiFiUDP udp;   ← ローカル変数も NG
+  // &#x274C; NG: loop() 内で begin() を繰り返す &#x2192; ソケットリーク
+  // WiFiUDP udp;   &#x2190; ローカル変数も NG
   // udp.begin(PORT);
 
-  // ? 既存の udp オブジェクトをそのまま使う
+  // &#x2705; 既存の udp オブジェクトをそのまま使う
   udp.beginPacket(REMOTE_IP, REMOTE_PORT);
   udp.print("data");
   udp.endPacket();
@@ -2487,7 +2487,7 @@ r_wifi_degradation: {
   title: 'Wi-Fi 長時間後の切断・再接続不能',
   cause: 'Wi-Fi の内部状態が壊れ、reconnect() だけでは回復しないことがあります。',
   fix: [
-    '切断検出時に WiFi.disconnect() → WiFi.begin() で再初期化する',
+    '切断検出時に WiFi.disconnect() &#x2192; WiFi.begin() で再初期化する',
     'タイムアウト内に再接続できない場合は ESP.restart() でリセットする'
   ],
   code: `// ===================================================
@@ -2495,7 +2495,7 @@ r_wifi_degradation: {
 // デバッグ用：削除可能
 // ===================================================
 void loop() {
-  // ↓ ここに挿入 ---------------------------------
+  // &#x2193; ここに挿入 ---------------------------------
   static uint32_t wifiRetryMs = 0;
   if (WiFi.status() != WL_CONNECTED) {
     if (millis() - wifiRetryMs > 10000) { // 10秒ごとに再試行
@@ -2513,7 +2513,7 @@ void loop() {
   }
   // ---------------------------------------------
 
-  // ↓ 既存のコードはここより下（変更不要）
+  // &#x2193; 既存のコードはここより下（変更不要）
 }`
 },
 
@@ -2532,10 +2532,10 @@ r_adc_wifi: {
 // ===================================================
 
 // ADC ピンの確認
-// ADC1: GPIO32,33,34,35,36,39 → Wi-Fi使用中でも使える
-// ADC2: GPIO0,2,4,12,13,14,15,25,26,27 → Wi-Fi使用中は使えない
+// ADC1: GPIO32,33,34,35,36,39 &#x2192; Wi-Fi使用中でも使える
+// ADC2: GPIO0,2,4,12,13,14,15,25,26,27 &#x2192; Wi-Fi使用中は使えない
 
-// ? 平均化読み取り関数（既存の analogRead を置き換え）
+// &#x2705; 平均化読み取り関数（既存の analogRead を置き換え）
 int readADCAverage(uint8_t pin, int samples = 16) {
   long sum = 0;
   for (int i = 0; i < samples; i++) {
@@ -2547,7 +2547,7 @@ int readADCAverage(uint8_t pin, int samples = 16) {
 
 void loop() {
   // 既存: int val = analogRead(34);
-  // ↓ 変更後:
+  // &#x2193; 変更後:
   int val = readADCAverage(34, 16); // 16回平均
   Serial.printf("[ADC] val=%d (%.2fV)\\n",
     val, val * 3.3f / 4095.0f);
@@ -2574,7 +2574,7 @@ void setup() {
   Serial.begin(115200);
   Wire.begin(21, 22); // SDA, SCL
 
-  // ↓ I2C スキャン（デバッグ用：削除可能）
+  // &#x2193; I2C スキャン（デバッグ用：削除可能）
   Serial.println("[I2C] Scanning 100kHz...");
   Wire.setClock(100000);
   int found = 0;
@@ -2617,12 +2617,12 @@ void setup() {
   Serial.begin(115200);
   Wire.begin(21, 22);
 
-  // ↓ ここに追加（既存の Wire.begin の直後）
+  // &#x2193; ここに追加（既存の Wire.begin の直後）
   Wire.setClock(100000);            // 100kHz に落とす
   Wire.setWireTimeout(3000, true);  // クロックストレッチタイムアウト 3ms
   // ---------------------------------------------
 
-  // ↓ 既存のコードはここより下（変更不要）
+  // &#x2193; 既存のコードはここより下（変更不要）
 }
 
 // エラー検出付き送信
@@ -2668,13 +2668,13 @@ r_i2c_clock: {
   cause: 'バスに接続された全デバイスの最低クロック速度に合わせる必要があります。100kHz デバイスと 400kHz デバイスが混在する場合は 100kHz にします。',
   fix: [
     'バス全体を最も遅いデバイスのクロックに合わせる',
-    '100kHz→4.7kOhm?10kOhm、400kHz→2.2kOhm?4.7kOhm のプルアップを使う'
+    '100kHz&#x2192;4.7kOhm?10kOhm、400kHz&#x2192;2.2kOhm?4.7kOhm のプルアップを使う'
   ],
   code: `// ===================================================
 // 【修正位置】Wire.begin() の直後
 // ===================================================
 Wire.begin(21, 22);
-Wire.setClock(100000); // ← 100kHz に設定（最も遅いデバイスに合わせる）
+Wire.setClock(100000); // &#x2190; 100kHz に設定（最も遅いデバイスに合わせる）
 // Wire.setClock(400000); // 400kHz（全デバイスが対応している場合のみ）`
 },
 
@@ -2705,15 +2705,15 @@ r_spi_garbage: {
 // ===================================================
 
 // SPI モード一覧（データシートを確認）
-// MODE0: CPOL=0, CPHA=0 → 最も一般的
-// MODE1: CPOL=0, CPHA=1 → 一部ADC/DAC
-// MODE2: CPOL=1, CPHA=0 → まれ
-// MODE3: CPOL=1, CPHA=1 → SDカード・一部フラッシュ
+// MODE0: CPOL=0, CPHA=0 &#x2192; 最も一般的
+// MODE1: CPOL=0, CPHA=1 &#x2192; 一部ADC/DAC
+// MODE2: CPOL=1, CPHA=0 &#x2192; まれ
+// MODE3: CPOL=1, CPHA=1 &#x2192; SDカード・一部フラッシュ
 
 #define CS_PIN 5
 #define SPI_FREQ 1000000 // 1MHz（余裕を持って低めに）
 
-SPISettings mySPISettings(SPI_FREQ, MSBFIRST, SPI_MODE0); // ← MODE を変えて試す
+SPISettings mySPISettings(SPI_FREQ, MSBFIRST, SPI_MODE0); // &#x2190; MODE を変えて試す
 
 void spiTransfer(uint8_t *data, size_t len) {
   SPI.beginTransaction(mySPISettings);
@@ -2740,9 +2740,9 @@ r_spi_mode: {
 // ===================================================
 
 // 症状と原因の対応
-// 全ビット1ずれ     → CPOL が間違い（MODE0?2 or MODE1?3）
-// 常に 0x00/0xFF   → CS またはクロックが届いていない（配線確認）
-// 最初の1バイトだけ正しい → CPHA が間違い
+// 全ビット1ずれ     &#x2192; CPOL が間違い（MODE0&#x2194;2 or MODE1&#x2194;3）
+// 常に 0x00/0xFF   &#x2192; CS またはクロックが届いていない（配線確認）
+// 最初の1バイトだけ正しい &#x2192; CPHA が間違い
 
 // 4つのモードを順番に試す
 void testAllSPIModes() {
@@ -2783,15 +2783,15 @@ SPISettings dev1Settings(4000000, MSBFIRST, SPI_MODE0); // デバイス1
 SPISettings dev2Settings(1000000, MSBFIRST, SPI_MODE3); // デバイス2
 
 void readDev1() {
-  SPI.beginTransaction(dev1Settings); // ← 必ずペアで
+  SPI.beginTransaction(dev1Settings); // &#x2190; 必ずペアで
   digitalWrite(CS_DEV1, LOW);
   uint8_t result = SPI.transfer(0x00);
   digitalWrite(CS_DEV1, HIGH);
-  SPI.endTransaction(); // ← ここで解放
+  SPI.endTransaction(); // &#x2190; ここで解放
 }
 
 void readDev2() {
-  SPI.beginTransaction(dev2Settings); // ← 別の設定で再開
+  SPI.beginTransaction(dev2Settings); // &#x2190; 別の設定で再開
   digitalWrite(CS_DEV2, LOW);
   uint8_t result = SPI.transfer(0x00);
   digitalWrite(CS_DEV2, HIGH);
@@ -2819,10 +2819,10 @@ r_spi_gpio12: {
 SPIClass hspi(HSPI);
 
 void setup() {
-  // ? NG: デフォルトの MISO=12 は使わない
+  // &#x274C; NG: デフォルトの MISO=12 は使わない
   // hspi.begin();
 
-  // ? OK: MISO を GPIO12 以外に変更
+  // &#x2705; OK: MISO を GPIO12 以外に変更
   hspi.begin(14, 25, 13, SS); // SCK=14, MISO=25, MOSI=13
 }`
 },
@@ -2837,7 +2837,7 @@ r_spi_clock: {
     '1MHz から始めて徐々に上げながら動作確認する'
   ],
   code: `SPISettings safe(1000000, MSBFIRST, SPI_MODE0); // 1MHz から試す
-// 動作確認後に 4MHz → 8MHz と上げていく`
+// 動作確認後に 4MHz &#x2192; 8MHz と上げていく`
 },
 
 r_uart_baud: {
@@ -2854,16 +2854,16 @@ r_uart_baud: {
 // 【修正位置】Serial.begin() のボーレート設定
 // ===================================================
 
-// ? 誤差ゼロのボーレート（推奨）
+// &#x2705; 誤差ゼロのボーレート（推奨）
 // 9600, 19200, 38400, 115200, 230400, 460800, 921600
 
 // APB 80MHz との割り切り誤差
-// 57600   → 約 0.8% 誤差（通常は許容範囲だが長距離では注意）
-// 76800   → 約 1.0% 誤差
-// 256000  → 約 0.16% 誤差
+// 57600   &#x2192; 約 0.8% 誤差（通常は許容範囲だが長距離では注意）
+// 76800   &#x2192; 約 1.0% 誤差
+// 256000  &#x2192; 約 0.16% 誤差
 
 Serial2.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN); // 誤差ゼロ
-// Serial2.begin(57600, ...); ← 長距離では避ける`
+// Serial2.begin(57600, ...); &#x2190; 長距離では避ける`
 },
 
 r_uart_format: {
@@ -2875,7 +2875,7 @@ r_uart_format: {
     '相手機器の仕様書でデータビット数・パリティ・ストップビットを確認する',
     '現代機器はほぼ 8N1（8bit, ノーパリティ, 1ストップ）'
   ],
-  warn: '7bit 送信→8bit 受信の場合、連続受信でフレーミングエラーが発生します。単発では症状が出ないので注意。',
+  warn: '7bit 送信&#x2192;8bit 受信の場合、連続受信でフレーミングエラーが発生します。単発では症状が出ないので注意。',
   code: `// ===================================================
 // データフォーマット設定一覧
 // ===================================================
@@ -2890,8 +2890,8 @@ Serial2.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN);
 // Serial2.begin(9600, SERIAL_8N2, RX_PIN, TX_PIN);
 
 // データビット不一致の症状
-// 7bit送信→8bit受信: MSB が常に1になる（0x41→0xC1）
-// ボーレート不一致: サンプリングポイントがずれる（0x41→0x21 等）`
+// 7bit送信&#x2192;8bit受信: MSB が常に1になる（0x41&#x2192;0xC1）
+// ボーレート不一致: サンプリングポイントがずれる（0x41&#x2192;0x21 等）`
 },
 
 r_uart_framing: {
@@ -2918,7 +2918,7 @@ void loop() {
     lastByteMs = millis();
     if (rxIdx >= sizeof(rxBuf)) rxIdx = 0; // オーバーフロー防止
   }
-  // 5ms 無受信 → パケット完了とみなす
+  // 5ms 無受信 &#x2192; パケット完了とみなす
   if (rxIdx > 0 && millis() - lastByteMs > 5) {
     processPacket(rxBuf, rxIdx);
     rxIdx = 0;
@@ -2955,13 +2955,13 @@ r_uart1_pins: {
 // 【修正位置】Serial1.begin() の呼び出し
 // ===================================================
 
-// ? NG: デフォルトピン（GPIO9/10）は Flash と競合
+// &#x274C; NG: デフォルトピン（GPIO9/10）は Flash と競合
 // Serial1.begin(9600);
 
-// ? OK: ピンを明示的に再マッピング
+// &#x2705; OK: ピンを明示的に再マッピング
 Serial1.begin(9600, SERIAL_8N1, 25, 26); // RX=25, TX=26
 
-// ? より推奨: Serial2 を外部機器との通信に使う
+// &#x2705; より推奨: Serial2 を外部機器との通信に使う
 // UART2 デフォルト: RX=GPIO16, TX=GPIO17
 Serial2.begin(9600, SERIAL_8N1, 16, 17);`
 },
@@ -2982,7 +2982,7 @@ void setup() {
   Serial.begin(115200);
   delay(500); // 起動ゴミデータが終わるのを待つ
 
-  // ↓ 受信バッファをフラッシュ（デバッグ用：削除可能）
+  // &#x2193; 受信バッファをフラッシュ（デバッグ用：削除可能）
   while (Serial.available()) Serial.read();
 
   // 外部機器との通信は Serial2 を推奨
@@ -3006,14 +3006,14 @@ r_uart_rx: {
   type: 'result',
   severity: 'medium',
   title: 'UART 受信できない',
-  cause: 'RX ピンの配線ミス（TX?RX のクロス接続忘れ）またはピン設定ミスが原因です。',
+  cause: 'RX ピンの配線ミス（TX&#x2194;RX のクロス接続忘れ）またはピン設定ミスが原因です。',
   fix: [
     '送信側の TX を受信側の RX に接続する（交差接続）',
     'Serial.begin(baud, config, RX_PIN, TX_PIN) でピンを明示する'
   ],
-  code: `// 送信側 TX → 受信側 RX（クロス接続）
-// ESP32 RX(16) ← 相手機器 TX
-// ESP32 TX(17) → 相手機器 RX
+  code: `// 送信側 TX &#x2192; 受信側 RX（クロス接続）
+// ESP32 RX(16) &#x2190; 相手機器 TX
+// ESP32 TX(17) &#x2192; 相手機器 RX
 Serial2.begin(9600, SERIAL_8N1, 16, 17); // RX=16, TX=17`
 },
 
@@ -3133,14 +3133,14 @@ r_isr_bad_call: {
     'ISR から xTaskNotifyFromISR / xQueueSendFromISR でタスクに通知する',
     '重い処理はタスク側で行う'
   ],
-  code: `// ? NG: ISR 内での禁止関数
+  code: `// &#x274C; NG: ISR 内での禁止関数
 void IRAM_ATTR badISR() {
-  Serial.println("triggered"); // ← NG: ブロッキング
-  delay(10);                   // ← NG: スケジューラ停止
-  Wire.read();                 // ← NG: Mutex 使用
+  Serial.println("triggered"); // &#x2190; NG: ブロッキング
+  delay(10);                   // &#x2190; NG: スケジューラ停止
+  Wire.read();                 // &#x2190; NG: Mutex 使用
 }
 
-// ? OK: フラグだけ立てる
+// &#x2705; OK: フラグだけ立てる
 volatile bool isrFlag = false;
 void IRAM_ATTR goodISR() {
   isrFlag = true; // これだけ
@@ -3193,7 +3193,7 @@ r_isr_notification: {
   title: 'ISR からタスクへの通知（正しい実装）',
   cause: '既に正しい方向性です。ISR から Task Notification または Queue を使ってタスクに通知する実装を確認します。',
   tip: 'これは正しい設計パターンです。',
-  code: `// ? ISR → Task Notification（最もシンプル・高速）
+  code: `// &#x2705; ISR &#x2192; Task Notification（最もシンプル・高速）
 TaskHandle_t taskHandle = NULL;
 
 void IRAM_ATTR myISR() {
@@ -3210,7 +3210,7 @@ void myTask(void *pv) {
   }
 }
 
-// ? ISR → Queue（データも渡したい場合）
+// &#x2705; ISR &#x2192; Queue（データも渡したい場合）
 QueueHandle_t isrQueue = NULL;
 
 void IRAM_ATTR dataISR() {
@@ -3239,13 +3239,13 @@ r_floating_pin: {
 // 【修正位置】pinMode の設定
 // ===================================================
 
-// ? NG: INPUT のままではフロート
+// &#x274C; NG: INPUT のままではフロート
 pinMode(buttonPin, INPUT);
 
-// ? OK: 内部プルアップを使う（スイッチが GND に繋がっている場合）
+// &#x2705; OK: 内部プルアップを使う（スイッチが GND に繋がっている場合）
 pinMode(buttonPin, INPUT_PULLUP);
 
-// ? OK: 内部プルダウンを使う（スイッチが 3.3V に繋がっている場合）
+// &#x2705; OK: 内部プルダウンを使う（スイッチが 3.3V に繋がっている場合）
 pinMode(buttonPin, INPUT_PULLDOWN);
 
 // 注意: GPIO34?39 は内部プルアップ/ダウンなし（外部抵抗が必要）`
@@ -3392,7 +3392,7 @@ uint32_t t = millis();
 while (WiFi.status() != WL_CONNECTED) {
   if (millis() - t > 10000) {
     Serial.println("[WiFi] Connection timeout!");
-    break; // タイムアウト → setup を継続
+    break; // タイムアウト &#x2192; setup を継続
   }
   delay(500);
 }`
@@ -3536,7 +3536,7 @@ r_bootstrap_pins: {
   fix: [
     'GPIO0: ブート時は HIGH（外部回路が LOW にするとフラッシュモード）',
     'GPIO2: ブート時は LOW または Hi-Z でなければならない',
-    'GPIO12: ブート時は LOW（HIGH だと 1.8V フラッシュモード）→ MISO 代替に推奨',
+    'GPIO12: ブート時は LOW（HIGH だと 1.8V フラッシュモード）&#x2192; MISO 代替に推奨',
     'GPIO15: ブート時は HIGH（シリアルログ制御に使用）',
     '新しい設計では GPIO0/2/12/15 を外部回路で使わない'
   ],
@@ -3560,7 +3560,7 @@ r_gpio_5v: {
   title: 'GPIO への 5V 直接接続（破損リスク）',
   cause: 'ESP32 の GPIO は 3.3V 系です。5V を直接入力すると内部保護回路を超えて破損します。',
   fix: [
-    '5V → 3.3V のレベル変換回路を間に入れる',
+    '5V &#x2192; 3.3V のレベル変換回路を間に入れる',
     '抵抗分圧（10kOhm + 20kOhm）で 5V を 3.3V に落とす（単方向のみ）',
     '双方向通信には BSS138 等の FET を使ったレベルシフタを使う'
   ],
@@ -3652,7 +3652,7 @@ r_psram: {
   title: 'PSRAM の接続・設定問題',
   cause: 'PSRAM を有効にするには Arduino IDE の設定で "PSRAM: Enabled" を選択する必要があります。有効化していないと PSRAM は使われません。',
   fix: [
-    'Arduino IDE: ツール → PSRAM → "Enabled" を選択',
+    'Arduino IDE: ツール &#x2192; PSRAM &#x2192; "Enabled" を選択',
     'ESP.getPsramSize() で認識されているか確認する',
     'PSRAM には heap_caps_malloc(size, MALLOC_CAP_SPIRAM) でアクセスする'
   ],
@@ -3698,7 +3698,7 @@ r_hw_thermal: {
 r_lib_conflict: {
   type: 'result',
   severity: 'medium',
-  title: '  サードパーティ製ライブラリの競合',
+  title: '&#x1F4E6; サードパーティ製ライブラリの競合',
   cause: '追加したライブラリが内部で同じ割り込みベクタ・同じ周辺機器（I2C/SPI/UART）・同じ FreeRTOS タスクを使っている場合、競合してクラッシュや誤動作が発生します。',
   fix: [
     '問題が発生したライブラリを1つずつコメントアウトして範囲を特定する',
@@ -3707,20 +3707,20 @@ r_lib_conflict: {
     'ライブラリのバージョンを固定する（Library Manager でバージョン選択）',
     '競合するライブラリが同一リソース（I2C/SPI）を使う場合は Mutex でシリアライズする'
   ],
-  info: '【診断手順】(1)最小スケッチ（setup/loop のみ）で動作確認 → (2)ライブラリを1つずつ追加して再現タイミングを特定 → (3)競合の原因（割り込み/周辺機器/タスク）を絞り込む。Arduino ESP32 BSP 自体も内部でタスクを持つ（WiFi/BT タスクなど）ため、ライブラリが高優先度タスクを作ると既存タスクを圧迫することがあります。',
+  info: '【診断手順】(1)最小スケッチ（setup/loop のみ）で動作確認 &#x2192; (2)ライブラリを1つずつ追加して再現タイミングを特定 &#x2192; (3)競合の原因（割り込み/周辺機器/タスク）を絞り込む。Arduino ESP32 BSP 自体も内部でタスクを持つ（WiFi/BT タスクなど）ため、ライブラリが高優先度タスクを作ると既存タスクを圧迫することがあります。',
   code: `// ===================================================
 // 【診断手順】ライブラリ競合の切り分けテンプレート
 // ===================================================
 
 // STEP 1: 全ライブラリをコメントアウトした最小構成でテスト
-// #include <SomeLibA.h>   // ← コメントアウト
-// #include <SomeLibB.h>   // ← コメントアウト
+// #include <SomeLibA.h>   // &#x2190; コメントアウト
+// #include <SomeLibB.h>   // &#x2190; コメントアウト
 #include <Arduino.h>
 
 void setup() {
   Serial.begin(115200);
   Serial.println("[TEST] Minimal sketch OK");
-  // 問題が再現しなければ → ライブラリが原因
+  // 問題が再現しなければ &#x2192; ライブラリが原因
 
   // STEP 2: 1つずつ有効化して再現タイミングを特定
 }
@@ -3776,9 +3776,9 @@ let currentChip = 'ESP32';
 
 // -- Chip selector --------------------------------------
 const CHIP_WARNINGS = {
-  'ESP32-S3': '? ESP32-S3 選択中：ADC2 の Wi-Fi 制約は改善されています。PSRAM は最大 8MB（オクタル SPI）。USB OTG 内蔵。AI アクセラレータあり。',
-  'ESP32-C3': '? ESP32-C3 選択中：シングルコア RISC-V です。xTaskCreatePinnedToCore で core=1 を指定しないでください。PSRAM は使用不可。Xtensa 専用コードは動作しません。',
-  'ESP32-S2': '? ESP32-S2 選択中：シングルコア・BLE なし（Wi-Fi のみ）。USB OTG 内蔵。PSRAM は最大 4MB。',
+  'ESP32-S3': '&#x26A1; ESP32-S3 選択中：ADC2 の Wi-Fi 制約は改善されています。PSRAM は最大 8MB（オクタル SPI）。USB OTG 内蔵。AI アクセラレータあり。',
+  'ESP32-C3': '&#x26A1; ESP32-C3 選択中：シングルコア RISC-V です。xTaskCreatePinnedToCore で core=1 を指定しないでください。PSRAM は使用不可。Xtensa 専用コードは動作しません。',
+  'ESP32-S2': '&#x26A1; ESP32-S2 選択中：シングルコア・BLE なし（Wi-Fi のみ）。USB OTG 内蔵。PSRAM は最大 4MB。',
   'ESP32': ''
 };
 
@@ -3834,7 +3834,7 @@ function doSearch(query) {
     const item = document.createElement('div');
     item.className = 'search-item';
     item.innerHTML = `<div class="search-item-title">${highlight(h.title, query)}</div>
-      <div class="search-item-cat">→ ${h.id}</div>`;
+      <div class="search-item-cat">&#x2192; ${h.id}</div>`;
     item.onclick = () => {
       history = [];
       currentNodeId = h.id;
@@ -3871,7 +3871,7 @@ let logAnalyzerOpen = false;
 function toggleLogAnalyzer() {
   logAnalyzerOpen = !logAnalyzerOpen;
   document.getElementById('log-analyzer-body').style.display = logAnalyzerOpen ? 'block' : 'none';
-  document.getElementById('log-analyzer-toggle').textContent = logAnalyzerOpen ? '▲ 閉じる' : '▼ 開く';
+  document.getElementById('log-analyzer-toggle').textContent = logAnalyzerOpen ? '&#x25B2; 閉じる' : '&#x25BC; 開く';
 }
 
 const LOG_PATTERNS = [
@@ -3907,7 +3907,7 @@ function analyzeLog() {
   if (BACKTRACE_PATTERN.test(log)) {
     const btDiv = document.createElement('div');
     btDiv.style.cssText = 'background:var(--bg-tertiary);border:1px solid var(--accent-blue);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-size:0.85rem;line-height:1.6;';
-    btDiv.innerHTML = `<span style="color:var(--accent-blue);font-weight:700;">  Backtrace を検出</span><br>
+    btDiv.innerHTML = `<span style="color:var(--accent-blue);font-weight:700;">&#x1F50D; Backtrace を検出</span><br>
       <span style="color:var(--text);">アドバイス：ログに <code style="color:var(--accent-cyan);background:var(--bg);padding:1px 5px;border-radius:3px;">Backtrace:</code> が含まれています。これを解析するには、Arduino IDE のツールメニューから <strong style="color:var(--text-bright);">「ESP Exception Decoder」</strong> を使用すると、エラーが発生したコードの行数を特定できます。</span>`;
     resultsEl.appendChild(btDiv);
   }
@@ -3923,15 +3923,15 @@ function analyzeLog() {
     el.className = 'log-match';
     el.innerHTML = `<span class="log-match-conf">${conf}</span>
       <div class="log-match-info">
-        <div class="log-match-title">  ${m.title}</div>
-        <div class="log-match-reason">${m.reason} → クリックで診断ノードへ</div>
+        <div class="log-match-title">&#x1F3AF; ${m.title}</div>
+        <div class="log-match-reason">${m.reason} &#x2192; クリックで診断ノードへ</div>
       </div>`;
     el.onclick = () => {
       history = [];
       currentNodeId = m.node;
       logAnalyzerOpen = false;
       document.getElementById('log-analyzer-body').style.display = 'none';
-      document.getElementById('log-analyzer-toggle').textContent = '▼ 開く';
+      document.getElementById('log-analyzer-toggle').textContent = '&#x25BC; 開く';
       render();
     };
     resultsEl.appendChild(el);
@@ -3945,7 +3945,7 @@ function renderRoot() {
   const node = NODES.root;
   const el = document.createElement('div');
   el.className = 'node-card';
-  el.innerHTML = `<h2>${node.title}</h2><p style="font-size:0.88rem;color:var(--accent-yellow);background:#d2992218;border:1px solid var(--accent-yellow);border-radius:8px;padding:10px 14px;margin-bottom:12px;">  ${node.body}</p>`;
+  el.innerHTML = `<h2>${node.title}</h2><p style="font-size:0.88rem;color:var(--accent-yellow);background:#d2992218;border:1px solid var(--accent-yellow);border-radius:8px;padding:10px 14px;margin-bottom:12px;">&#x1F4A1; ${node.body}</p>`;
   const grid = document.createElement('div');
   grid.className = 'cat-grid';
   node.choices.forEach(c => {
@@ -3985,19 +3985,19 @@ function renderResult(id, node) {
   const el = document.createElement('div');
   el.className = 'result-card';
   const sevClass = {high:'sev-high', medium:'sev-medium', low:'sev-low'}[node.severity] || 'sev-medium';
-  const sevLabel = {high:'  HIGH', medium:'  MEDIUM', low:'  LOW'}[node.severity] || node.severity;
+  const sevLabel = {high:'&#x1F534; HIGH', medium:'&#x1F7E1; MEDIUM', low:'&#x1F7E2; LOW'}[node.severity] || node.severity;
   let html = `<span class="severity-badge ${sevClass}">${sevLabel}</span>`;
   // Chip-specific badge
   if (currentChip !== 'ESP32') {
-    html += `<span class="severity-badge" style="background:#bc8cff30;color:#bc8cff;border:1px solid #bc8cff;margin-left:6px;">  ${currentChip} 選択中</span>`;
+    html += `<span class="severity-badge" style="background:#bc8cff30;color:#bc8cff;border:1px solid #bc8cff;margin-left:6px;">&#x1F50C; ${currentChip} 選択中</span>`;
   }
-  html += `<h2>  ${node.title}</h2>`;
+  html += `<h2>&#x1F3AF; ${node.title}</h2>`;
   html += `<p>${node.cause}</p>`;
-  if (node.warn) html += `<div class="warn-box">?? ${node.warn}</div>`;
-  if (node.info) html += `<div class="info-box">?? <pre style="background:none;border:none;padding:0;color:inherit;font-family:inherit;font-size:inherit;white-space:pre-wrap">${node.info}</pre></div>`;
-  if (node.tip) html += `<div class="tip-box">? ${node.tip}</div>`;
+  if (node.warn) html += `<div class="warn-box">&#x26A0;&#xFE0F; ${node.warn}</div>`;
+  if (node.info) html += `<div class="info-box">&#x2139;&#xFE0F; <pre style="background:none;border:none;padding:0;color:inherit;font-family:inherit;font-size:inherit;white-space:pre-wrap">${node.info}</pre></div>`;
+  if (node.tip) html += `<div class="tip-box">&#x2705; ${node.tip}</div>`;
   if (node.fix && node.fix.length) {
-    html += `<h3>? 対処法</h3><ul>` + node.fix.map(f => `<li>${f}</li>`).join('') + `</ul>`;
+    html += `<h3>&#x2705; 対処法</h3><ul>` + node.fix.map(f => `<li>${f}</li>`).join('') + `</ul>`;
   }
   el.innerHTML = html;
   if (node.code) {
@@ -4013,7 +4013,7 @@ function renderResult(id, node) {
     copyBtn.textContent = 'COPY';
     copyBtn.onclick = () => {
       navigator.clipboard.writeText(node.code).then(() => {
-        copyBtn.textContent = 'COPIED ?';
+        copyBtn.textContent = 'COPIED &#x2713;';
         copyBtn.classList.add('copied');
         setTimeout(() => { copyBtn.textContent = 'COPY'; copyBtn.classList.remove('copied'); }, 2000);
       }).catch(() => {
@@ -4024,7 +4024,7 @@ function renderResult(id, node) {
         ta.select();
         document.execCommand('copy');
         document.body.removeChild(ta);
-        copyBtn.textContent = 'COPIED ?';
+        copyBtn.textContent = 'COPIED &#x2713;';
         copyBtn.classList.add('copied');
         setTimeout(() => { copyBtn.textContent = 'COPY'; copyBtn.classList.remove('copied'); }, 2000);
       });
@@ -4039,7 +4039,7 @@ function renderResult(id, node) {
   chipBtn.className = 'choice-btn';
   chipBtn.style.marginTop = '10px';
   chipBtn.style.fontSize = '0.8rem';
-  chipBtn.textContent = '  チップ別の差異・制約を確認する';
+  chipBtn.textContent = '&#x1F50C; チップ別の差異・制約を確認する';
   chipBtn.onclick = () => navigate('r_chip_differences', 'チップ別差異');
   el.appendChild(chipBtn);
   el.appendChild(buildNavRow());
@@ -4052,13 +4052,13 @@ function buildNavRow() {
   if (history.length > 0) {
     const backBtn = document.createElement('button');
     backBtn.className = 'nav-btn';
-    backBtn.innerHTML = '← 前に戻る';
+    backBtn.innerHTML = '&#x2190; 前に戻る';
     backBtn.onclick = () => goBack();
     row.appendChild(backBtn);
   }
   const restartBtn = document.createElement('button');
   restartBtn.className = 'nav-btn restart';
-  restartBtn.innerHTML = '  最初からやり直す';
+  restartBtn.innerHTML = '&#x1F504; 最初からやり直す';
   restartBtn.onclick = () => restart();
   row.appendChild(restartBtn);
   return row;
@@ -4094,7 +4094,7 @@ function updateBreadcrumb() {
   rootCrumb.onclick = restart;
   bc.appendChild(rootCrumb);
   history.forEach((h, i) => {
-    bc.appendChild(Object.assign(document.createElement('span'), {textContent: ' ? '}));
+    bc.appendChild(Object.assign(document.createElement('span'), {textContent: ' &#x203A; '}));
     const crumb = document.createElement('span');
     const shortLabel = h.label.replace(/^[^\s]+ /, '').substring(0, 20);
     crumb.textContent = shortLabel;
@@ -4132,7 +4132,7 @@ function render() {
   container.innerHTML = '';
   const node = NODES[currentNodeId];
   if (!node) {
-    container.innerHTML = `<div class="node-card"><h2>?? ノードが見つかりません: ${currentNodeId}</h2></div>`;
+    container.innerHTML = `<div class="node-card"><h2>&#x26A0;&#xFE0F; ノードが見つかりません: ${currentNodeId}</h2></div>`;
     return;
   }
   let el;
