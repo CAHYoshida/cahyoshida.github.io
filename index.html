@@ -622,7 +622,7 @@ pre {
 
 <!-- Search Panel -->
 <div id="search-panel">
-  <input type="text" id="search-input" placeholder="[検索]  キーワード検索（例: スタック、Mutex、ADC、UART...）" autocomplete="off">
+  <input type="text" id="search-input" placeholder=" キーワード検索（例: スタック、Mutex、ADC、UART...）" autocomplete="off">
   <button id="search-clear">x</button>
   <div id="search-results"></div>
 </div>
@@ -630,12 +630,12 @@ pre {
 <!-- Log Analyzer -->
 <div id="log-analyzer">
   <div id="log-analyzer-header" onclick="toggleLogAnalyzer()">
-    <span id="log-analyzer-title">[ログ] シリアルログ簡易解析（Guru Meditation / エラーログを貼り付け）</span>
+    <span id="log-analyzer-title">シリアルログ簡易解析（Guru Meditation / エラーログを貼り付け）</span>
     <span id="log-analyzer-toggle">v 開く</span>
   </div>
   <div id="log-analyzer-body">
     <textarea id="log-input" placeholder="例: Guru Meditation Error: Core 0 panic'ed (LoadProhibited)&#10;Backtrace: 0x4008...&#10;&#10;E (12345) task_wdt: Task watchdog got triggered..."></textarea>
-    <button id="log-analyze-btn" onclick="analyzeLog()">[検索] 解析して診断ノードを推薦</button>
+    <button id="log-analyze-btn" onclick="analyzeLog()">解析して診断ノードを推薦</button>
     <div id="log-results"></div>
   </div>
 </div>
@@ -658,7 +658,7 @@ pre {
 <div id="breadcrumb"></div>
 
 <div id="hw-checklist-banner">
-  <h3>[!] ハードウェア基本チェックリスト（診断前に確認）</h3>
+  <h3>ハードウェア基本チェックリスト（診断前に確認）</h3>
   <div class="hw-check-grid">
     <label class="hw-check-item"><input type="checkbox"> 電源電圧が 3.3V ±5% 以内か</label>
     <label class="hw-check-item"><input type="checkbox"> USB ケーブルはデータ通信対応か（充電専用NG）</label>
@@ -1078,17 +1078,17 @@ r_stackoverflow: {
   cause: 'タスクのスタックサイズが不足しています。ローカル変数・関数呼び出しのネストがスタック上限を超えています。',
   fix: [
     'xTaskCreateUniversal の第4引数（スタックサイズ）を増やす（単位：バイト）',
-    '[!] 重要：uxTaskGetStackHighWaterMark() の戻り値は「バイト数」です。例：返値 256 -> 残り 256バイト。256バイト（=戻り値256）未満は危険域',
-    '[注意] ESP32固有の注意：標準 FreeRTOS の uxTaskGetStackHighWaterMark はワード数を返しますが、ESP-IDF（Arduino ESP32 BSP）の実装はスタックポインタ差分をそのままバイト数で返します。他のマイコン（STM32等）から移植する場合は × 4 の換算が不要になります',
-    '[Tips]【Tips】単位の歴史的背景：現在の Arduino ESP32 Core (v2.x以降) では xTaskCreateUniversal の引数はバイト単位ですが、古いバージョンや他の FreeRTOS 環境ではワード単位（1ワード=4バイト）で指定する場合がありました。古いプロジェクトを移植する際は設定値が 4 倍小さくなっていないか確認してください',
+    '重要：uxTaskGetStackHighWaterMark() の戻り値は「バイト数」です。例：返値 256 -> 残り 256バイト。256バイト（=戻り値256）未満は危険域',
+    'ESP32固有の注意：標準 FreeRTOS の uxTaskGetStackHighWaterMark はワード数を返しますが、ESP-IDF（Arduino ESP32 BSP）の実装はスタックポインタ差分をそのままバイト数で返します。他のマイコン（STM32等）から移植する場合は × 4 の換算が不要になります',
+    'Tips:【Tips】単位の歴史的背景：現在の Arduino ESP32 Core (v2.x以降) では xTaskCreateUniversal の引数はバイト単位ですが、古いバージョンや他の FreeRTOS 環境ではワード単位（1ワード=4バイト）で指定する場合がありました。古いプロジェクトを移植する際は設定値が 4 倍小さくなっていないか確認してください',
     'uxTaskGetStackHighWaterMark(handle) で最小残量を確認する',
     '大きな配列・構造体はグローバルまたは static にする',
     '再帰呼び出しを避ける'
   ],
-  info: '【中級者向け・ESP32固有】uxTaskGetStackHighWaterMark() はスタック領域をウォーク（ループでスキャン）します。スタックを塗りつぶした最高水位を返すので「HighWaterMark」です。[!] 標準 FreeRTOS はワード数を返しますが、ESP-IDF の実装（tasks.c の prvTaskCheckFreeStackSpace）はポインタ差分をそのままバイト数で返します。Arduino ESP32 BSP でも同様にバイト数です（× 4 不要）。256バイト未満は危険域。スタックは xTaskCreateUniversal 時に DRAM に確保されるため、PSRAM には置けません。',
+  info: '【中級者向け・ESP32固有】uxTaskGetStackHighWaterMark() はスタック領域をウォーク（ループでスキャン）します。スタックを塗りつぶした最高水位を返すので「HighWaterMark」です。標準 FreeRTOS はワード数を返しますが、ESP-IDF の実装（tasks.c の prvTaskCheckFreeStackSpace）はポインタ差分をそのままバイト数で返します。Arduino ESP32 BSP でも同様にバイト数です（× 4 不要）。256バイト未満は危険域。スタックは xTaskCreateUniversal 時に DRAM に確保されるため、PSRAM には置けません。',
   code: `// ===================================================
 // 【挿入位置】タスク関数内の vTaskDelay の直前
-// [!] 戻り値はバイト数（× 4 は不要）
+// 戻り値はバイト数（× 4 は不要）
 // デバッグ用：削除可能
 // ===================================================
 
@@ -1213,7 +1213,7 @@ void badTask(void *pvParam) {
   return; // -> Guru Meditation or サイレントハング
 }
 
-// [OK] OK パターン1：永続タスク
+// OK パターン1：永続タスク
 void goodTask1(void *pvParam) {
   while (1) {
     doSomething();
@@ -1222,7 +1222,7 @@ void goodTask1(void *pvParam) {
   // ここには到達しない
 }
 
-// [OK] OK パターン2：一度だけ実行して終了
+// OK パターン2：一度だけ実行して終了
 void goodTask2(void *pvParam) {
   doSomethingOnce();
   vTaskDelete(NULL); // 自分自身を正常に削除
@@ -1237,7 +1237,7 @@ r_twdt: {
   cause: 'タスクが 5秒以上（デフォルト）CPU を占有し続けたため Watchdog がトリップしました。重いループ・ブロッキング処理（通信待ち・ビジーウェイトなど）が原因です。',
   fix: [
     '長いループ内に vTaskDelay(pdMS_TO_TICKS(10)) を入れてスケジューラに CPU を返す',
-    '[注意] delay() と vTaskDelay() の関係：Arduino ESP32 の delay() は内部で vTaskDelay() を呼ぶラッパです。タスクコンテキストで呼べばどちらもコンテキストスイッチが発生します。ただし delay() はミリ秒単位のみで精度が低いため、FreeRTOS タスクでは vTaskDelay(pdMS_TO_TICKS(ms)) を推奨します',
+    'delay() と vTaskDelay() の関係：Arduino ESP32 の delay() は内部で vTaskDelay() を呼ぶラッパです。タスクコンテキストで呼べばどちらもコンテキストスイッチが発生します。ただし delay() はミリ秒単位のみで精度が低いため、FreeRTOS タスクでは vTaskDelay(pdMS_TO_TICKS(ms)) を推奨します',
     '重い計算は小分けにして vTaskDelay を挟む',
     'while(1){} や for(;;){} のビジーウェイトは必ず vTaskDelay を入れる'
   ],
@@ -1254,7 +1254,7 @@ void badTask(void *pvParam) {
   }
 }
 
-// [OK] OK: 重い処理を小分けにして vTaskDelay を挟む
+// OK: 重い処理を小分けにして vTaskDelay を挟む
 void goodTask(void *pvParam) {
   while (1) {
     heavyProcess();
@@ -1292,7 +1292,7 @@ r_iwdt: {
 
 TaskHandle_t workerHandle = NULL;
 
-// [OK] 正しい ISR パターン：通知のみ行う
+// 正しい ISR パターン：通知のみ行う
 void IRAM_ATTR myISR() {
   // v ISR の中身のみ修正（関数名・attachInterrupt は変えない）
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
@@ -1639,7 +1639,7 @@ r_volatile_missing: {
 bool isrTriggered = false;
 uint32_t sensorValue = 0;
 
-// [OK] OK: volatile あり
+// OK: volatile あり
 volatile bool isrTriggered = false;
 volatile uint32_t sensorValue = 0;
 
@@ -1668,14 +1668,14 @@ void badTask(void *pv) {
   vTaskDelay(pdMS_TO_TICKS(100));
 }
 
-// [OK] OK パターン1: static にする（スタックに乗らない）
+// OK パターン1: static にする（スタックに乗らない）
 void goodTask1(void *pv) {
   static uint8_t buf[2048]; // static -> BSS セクションに配置
   process(buf);
   vTaskDelay(pdMS_TO_TICKS(100));
 }
 
-// [OK] OK パターン2: ヒープに確保する
+// OK パターン2: ヒープに確保する
 void goodTask2(void *pv) {
   uint8_t *buf = (uint8_t*)malloc(2048);
   if (buf) {
@@ -1693,8 +1693,8 @@ r_isr_iram: {
   cause: 'Flash キャッシュが無効になる瞬間（NVS 書き込みなど）に ISR が実行されると、Flash 上のコードが読めず Illegal Instruction が発生します。IRAM_ATTR を付けていない関数は Flash 上に配置されます。',
   fix: [
     'ISR 関数自体と ISR から呼ぶ全関数に IRAM_ATTR を付ける',
-    '[!] ISR 内での禁止事項：Serial.print（内部Mutex使用）、delay()（ISRコンテキストからvTaskDelayを呼べないためクラッシュ）、浮動小数点演算（FPUコンテキスト非保存）、malloc/free（内部Mutex使用）、Wire.read（Mutex使用）',
-    '[!] ISR と共有する変数には必ず volatile を付ける（コンパイラのレジスタキャッシュを防ぐ）',
+    'ISR 内での禁止事項：Serial.print（内部Mutex使用）、delay()（ISRコンテキストからvTaskDelayを呼べないためクラッシュ）、浮動小数点演算（FPUコンテキスト非保存）、malloc/free（内部Mutex使用）、Wire.read（Mutex使用）',
+    'ISR と共有する変数には必ず volatile を付ける（コンパイラのレジスタキャッシュを防ぐ）',
     'ISR から外部ライブラリの関数を直接呼ばない（IRAM_ATTR かどうか不明）',
     'ISR 内でのみ使う定数は DRAM_ATTR を付ける'
   ],
@@ -1711,7 +1711,7 @@ void badISR() {
   malloc(64);                   // NG: 内部Mutex使用
 }
 
-// [OK] OK: 全呼び出し経路に IRAM_ATTR + volatile
+// OK: 全呼び出し経路に IRAM_ATTR + volatile
 volatile bool isrFlag = false;  // volatile 必須
 volatile uint32_t isrTs = 0;    // 共有変数は volatile
 
@@ -1750,7 +1750,7 @@ void writeToBuf(int idx, uint8_t val) {
   buf[idx] = val; // idx >= 64 だとメモリ破壊
 }
 
-// [OK] OK: 境界チェックあり
+// OK: 境界チェックあり
 void writeToBufSafe(int idx, uint8_t val) {
   if (idx < 0 || idx >= BUF_SIZE) {
     // デバッグ用：削除可能
@@ -1839,7 +1839,7 @@ void taskA(void *pv) {
   }
 }
 
-// [OK] OK: 全タスクで取得順序を統一（A -> B）
+// OK: 全タスクで取得順序を統一（A -> B）
 void taskB_fixed(void *pv) {
   while(1) {
     // タイムアウト付きで Take（デッドロック検出）
@@ -1904,7 +1904,7 @@ void ngPatterns() {
   // if (error) return; // <- Give を忘れてデッドロック
 }
 
-// [OK] OK パターン
+// OK パターン
 void safeUse(void *pv) {
   while(1) {
     if (xSemaphoreTake(sem, pdMS_TO_TICKS(1000)) == pdTRUE) {
@@ -2049,7 +2049,7 @@ void loop() {
   // v 既存のコードはここより下（変更不要）
 }
 
-// [OK] free 漏れなしパターン
+// free 漏れなしパターン
 uint8_t* safeMalloc(size_t size) {
   uint8_t* p = (uint8_t*)malloc(size);
   if (!p) {
@@ -2090,7 +2090,7 @@ void badAlloc() {
   // delete obj; <- 忘れる -> リーク
 }
 
-// [OK] OK パターン1: 明示的に delete
+// OK パターン1: 明示的に delete
 void goodAlloc() {
   MyClass* obj = new MyClass();
   if (!obj) return;
@@ -2099,7 +2099,7 @@ void goodAlloc() {
   obj = nullptr;
 }
 
-// [OK] OK パターン2: 配列は delete[]
+// OK パターン2: 配列は delete[]
 void goodArrayAlloc() {
   uint8_t* arr = new uint8_t[256];
   if (!arr) return;
@@ -2123,7 +2123,7 @@ r_task_leak: {
 // 【挿入位置】タスク生成・削除の管理
 // ===================================================
 
-// [OK] タスクを動的に生成・削除する場合
+// タスクを動的に生成・削除する場合
 TaskHandle_t dynamicTaskHandle = NULL;
 
 void startDynamicTask() {
@@ -2158,7 +2158,7 @@ r_heap_fragment: {
   title: 'ヒープの断片化',
   cause: '小さな malloc/free を繰り返すとヒープの空き領域が細切れになり、合計空き容量があっても大きなブロックが確保できなくなります。Arduino の String クラスは特に断片化を引き起こしやすい原因です。',
   fix: [
-    '[!] String クラスの += 演算や + 演算子は内部でメモリの再確保を繰り返します。事前に str.reserve(N) で領域を確保することで再アロケーションを防げます',
+    'String クラスの += 演算や + 演算子は内部でメモリの再確保を繰り返します。事前に str.reserve(N) で領域を確保することで再アロケーションを防げます',
     '根本解決：String の多用を避け、char 配列 + snprintf に置き換える',
     '固定サイズのオブジェクトプールを作る（同じサイズの malloc/free を繰り返す）',
     'ESP.getMinFreeHeap() と ESP.getMaxAllocHeap() で断片化度を確認する',
@@ -2233,7 +2233,7 @@ void badString() {
   Serial.println(msg);
 }
 
-// [OK] OK: char 配列 + snprintf（1回だけ確保）
+// OK: char 配列 + snprintf（1回だけ確保）
 void goodString() {
   char msg[64]; // スタック上に固定長で確保
   snprintf(msg, sizeof(msg), "Temp: %.1f Hum: %.1f",
@@ -2241,7 +2241,7 @@ void goodString() {
   Serial.println(msg);
 }
 
-// [OK] Serial.printf を直接使う（最もシンプル）
+// Serial.printf を直接使う（最もシンプル）
 void bestString() {
   Serial.printf("Temp: %.1f Hum: %.1f\\n", temperature, humidity);
 }`
@@ -2441,7 +2441,7 @@ r_udp_leak: {
 // 【修正位置】WiFiUDP の宣言と begin() の位置
 // ===================================================
 
-// [OK] OK: グローバルに1つだけ（ファイル先頭）
+// OK: グローバルに1つだけ（ファイル先頭）
 WiFiUDP udp;
 
 void setup() {
@@ -2455,7 +2455,7 @@ void loop() {
   // WiFiUDP udp;   <- ローカル変数も NG
   // udp.begin(PORT);
 
-  // [OK] 既存の udp オブジェクトをそのまま使う
+  // 既存の udp オブジェクトをそのまま使う
   udp.beginPacket(REMOTE_IP, REMOTE_PORT);
   udp.print("data");
   udp.endPacket();
@@ -2537,7 +2537,7 @@ r_adc_wifi: {
 // ADC1: GPIO32,33,34,35,36,39 -> Wi-Fi使用中でも使える
 // ADC2: GPIO0,2,4,12,13,14,15,25,26,27 -> Wi-Fi使用中は使えない
 
-// [OK] 平均化読み取り関数（既存の analogRead を置き換え）
+// 平均化読み取り関数（既存の analogRead を置き換え）
 int readADCAverage(uint8_t pin, int samples = 16) {
   long sum = 0;
   for (int i = 0; i < samples; i++) {
@@ -2824,7 +2824,7 @@ void setup() {
   // [NG] NG: デフォルトの MISO=12 は使わない
   // hspi.begin();
 
-  // [OK] OK: MISO を GPIO12 以外に変更
+  // OK: MISO を GPIO12 以外に変更
   hspi.begin(14, 25, 13, SS); // SCK=14, MISO=25, MOSI=13
 }`
 },
@@ -2856,7 +2856,7 @@ r_uart_baud: {
 // 【修正位置】Serial.begin() のボーレート設定
 // ===================================================
 
-// [OK] 誤差ゼロのボーレート（推奨）
+// 誤差ゼロのボーレート（推奨）
 // 9600, 19200, 38400, 115200, 230400, 460800, 921600
 
 // APB 80MHz との割り切り誤差
@@ -2960,10 +2960,10 @@ r_uart1_pins: {
 // [NG] NG: デフォルトピン（GPIO9/10）は Flash と競合
 // Serial1.begin(9600);
 
-// [OK] OK: ピンを明示的に再マッピング
+// OK: ピンを明示的に再マッピング
 Serial1.begin(9600, SERIAL_8N1, 25, 26); // RX=25, TX=26
 
-// [OK] より推奨: Serial2 を外部機器との通信に使う
+// より推奨: Serial2 を外部機器との通信に使う
 // UART2 デフォルト: RX=GPIO16, TX=GPIO17
 Serial2.begin(9600, SERIAL_8N1, 16, 17);`
 },
@@ -3142,7 +3142,7 @@ void IRAM_ATTR badISR() {
   Wire.read();                 // <- NG: Mutex 使用
 }
 
-// [OK] OK: フラグだけ立てる
+// OK: フラグだけ立てる
 volatile bool isrFlag = false;
 void IRAM_ATTR goodISR() {
   isrFlag = true; // これだけ
@@ -3195,7 +3195,7 @@ r_isr_notification: {
   title: 'ISR からタスクへの通知（正しい実装）',
   cause: '既に正しい方向性です。ISR から Task Notification または Queue を使ってタスクに通知する実装を確認します。',
   tip: 'これは正しい設計パターンです。',
-  code: `// [OK] ISR -> Task Notification（最もシンプル・高速）
+  code: `// ISR -> Task Notification（最もシンプル・高速）
 TaskHandle_t taskHandle = NULL;
 
 void IRAM_ATTR myISR() {
@@ -3212,7 +3212,7 @@ void myTask(void *pv) {
   }
 }
 
-// [OK] ISR -> Queue（データも渡したい場合）
+// ISR -> Queue（データも渡したい場合）
 QueueHandle_t isrQueue = NULL;
 
 void IRAM_ATTR dataISR() {
@@ -3244,10 +3244,10 @@ r_floating_pin: {
 // [NG] NG: INPUT のままではフロート
 pinMode(buttonPin, INPUT);
 
-// [OK] OK: 内部プルアップを使う（スイッチが GND に繋がっている場合）
+// OK: 内部プルアップを使う（スイッチが GND に繋がっている場合）
 pinMode(buttonPin, INPUT_PULLUP);
 
-// [OK] OK: 内部プルダウンを使う（スイッチが 3.3V に繋がっている場合）
+// OK: 内部プルダウンを使う（スイッチが 3.3V に繋がっている場合）
 pinMode(buttonPin, INPUT_PULLDOWN);
 
 // 注意: GPIO34?39 は内部プルアップ/ダウンなし（外部抵抗が必要）`
@@ -3778,9 +3778,9 @@ let currentChip = 'ESP32';
 
 // -- Chip selector --------------------------------------
 const CHIP_WARNINGS = {
-  'ESP32-S3': '[ESP] ESP32-S3 選択中：ADC2 の Wi-Fi 制約は改善されています。PSRAM は最大 8MB（オクタル SPI）。USB OTG 内蔵。AI アクセラレータあり。',
-  'ESP32-C3': '[ESP] ESP32-C3 選択中：シングルコア RISC-V です。xTaskCreatePinnedToCore で core=1 を指定しないでください。PSRAM は使用不可。Xtensa 専用コードは動作しません。',
-  'ESP32-S2': '[ESP] ESP32-S2 選択中：シングルコア・BLE なし（Wi-Fi のみ）。USB OTG 内蔵。PSRAM は最大 4MB。',
+  'ESP32-S3': 'ESP32-S3 選択中：ADC2 の Wi-Fi 制約は改善されています。PSRAM は最大 8MB（オクタル SPI）。USB OTG 内蔵。AI アクセラレータあり。',
+  'ESP32-C3': 'ESP32-C3 選択中：シングルコア RISC-V です。xTaskCreatePinnedToCore で core=1 を指定しないでください。PSRAM は使用不可。Xtensa 専用コードは動作しません。',
+  'ESP32-S2': 'ESP32-S2 選択中：シングルコア・BLE なし（Wi-Fi のみ）。USB OTG 内蔵。PSRAM は最大 4MB。',
   'ESP32': ''
 };
 
@@ -3909,7 +3909,7 @@ function analyzeLog() {
   if (BACKTRACE_PATTERN.test(log)) {
     const btDiv = document.createElement('div');
     btDiv.style.cssText = 'background:var(--bg-tertiary);border:1px solid var(--accent-blue);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-size:0.85rem;line-height:1.6;';
-    btDiv.innerHTML = `<span style="color:var(--accent-blue);font-weight:700;">[検索] Backtrace を検出</span><br>
+    btDiv.innerHTML = `<span style="color:var(--accent-blue);font-weight:700;">Backtrace を検出</span><br>
       <span style="color:var(--text);">アドバイス：ログに <code style="color:var(--accent-cyan);background:var(--bg);padding:1px 5px;border-radius:3px;">Backtrace:</code> が含まれています。これを解析するには、Arduino IDE のツールメニューから <strong style="color:var(--text-bright);">「ESP Exception Decoder」</strong> を使用すると、エラーが発生したコードの行数を特定できます。</span>`;
     resultsEl.appendChild(btDiv);
   }
@@ -3925,7 +3925,7 @@ function analyzeLog() {
     el.className = 'log-match';
     el.innerHTML = `<span class="log-match-conf">${conf}</span>
       <div class="log-match-info">
-        <div class="log-match-title">[診断] ${m.title}</div>
+        <div class="log-match-title">${m.title}</div>
         <div class="log-match-reason">${m.reason} -> クリックで診断ノードへ</div>
       </div>`;
     el.onclick = () => {
@@ -3947,7 +3947,7 @@ function renderRoot() {
   const node = NODES.root;
   const el = document.createElement('div');
   el.className = 'node-card';
-  el.innerHTML = `<h2>${node.title}</h2><p style="font-size:0.88rem;color:var(--accent-yellow);background:#d2992218;border:1px solid var(--accent-yellow);border-radius:8px;padding:10px 14px;margin-bottom:12px;">[Tips] ${node.body}</p>`;
+  el.innerHTML = `<h2>${node.title}</h2><p style="font-size:0.88rem;color:var(--accent-yellow);background:#d2992218;border:1px solid var(--accent-yellow);border-radius:8px;padding:10px 14px;margin-bottom:12px;">Tips: ${node.body}</p>`;
   const grid = document.createElement('div');
   grid.className = 'cat-grid';
   node.choices.forEach(c => {
@@ -3991,15 +3991,15 @@ function renderResult(id, node) {
   let html = `<span class="severity-badge ${sevClass}">${sevLabel}</span>`;
   // Chip-specific badge
   if (currentChip !== 'ESP32') {
-    html += `<span class="severity-badge" style="background:#bc8cff30;color:#bc8cff;border:1px solid #bc8cff;margin-left:6px;">[HW] ${currentChip} 選択中</span>`;
+    html += `<span class="severity-badge" style="background:#bc8cff30;color:#bc8cff;border:1px solid #bc8cff;margin-left:6px;">${currentChip} 選択中</span>`;
   }
-  html += `<h2>[診断] ${node.title}</h2>`;
+  html += `<h2>${node.title}</h2>`;
   html += `<p>${node.cause}</p>`;
-  if (node.warn) html += `<div class="warn-box">[!] ${node.warn}</div>`;
-  if (node.info) html += `<div class="info-box">[i] <pre style="background:none;border:none;padding:0;color:inherit;font-family:inherit;font-size:inherit;white-space:pre-wrap">${node.info}</pre></div>`;
-  if (node.tip) html += `<div class="tip-box">[OK] ${node.tip}</div>`;
+  if (node.warn) html += `<div class="warn-box">${node.warn}</div>`;
+  if (node.info) html += `<div class="info-box"><pre style="background:none;border:none;padding:0;color:inherit;font-family:inherit;font-size:inherit;white-space:pre-wrap">${node.info}</pre></div>`;
+  if (node.tip) html += `<div class="tip-box">${node.tip}</div>`;
   if (node.fix && node.fix.length) {
-    html += `<h3>[OK] 対処法</h3><ul>` + node.fix.map(f => `<li>${f}</li>`).join('') + `</ul>`;
+    html += `<h3>対処法</h3><ul>` + node.fix.map(f => `<li>${f}</li>`).join('') + `</ul>`;
   }
   el.innerHTML = html;
   if (node.code) {
@@ -4134,7 +4134,7 @@ function render() {
   container.innerHTML = '';
   const node = NODES[currentNodeId];
   if (!node) {
-    container.innerHTML = `<div class="node-card"><h2>[!] ノードが見つかりません: ${currentNodeId}</h2></div>`;
+    container.innerHTML = `<div class="node-card"><h2>ノードが見つかりません: ${currentNodeId}</h2></div>`;
     return;
   }
   let el;
