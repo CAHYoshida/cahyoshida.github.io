@@ -1088,7 +1088,7 @@ r_stackoverflow: {
   info: '【中級者向け・ESP32固有】uxTaskGetStackHighWaterMark() はスタック領域をウォーク（ループでスキャン）します。スタックを塗りつぶした最高水位を返すので「HighWaterMark」です。&#x26A0;&#xFE0F; 標準 FreeRTOS はワード数を返しますが、ESP-IDF の実装（tasks.c の prvTaskCheckFreeStackSpace）はポインタ差分をそのままバイト数で返します。Arduino ESP32 BSP でも同様にバイト数です（× 4 不要）。256バイト未満は危険域。スタックは xTaskCreateUniversal 時に DRAM に確保されるため、PSRAM には置けません。',
   code: `// ===================================================
 // 【挿入位置】タスク関数内の vTaskDelay の直前
-// &#x26A0;&#xFE0F; 戻り値はバイト数（× 4 は不要）
+// [!] 戻り値はバイト数（× 4 は不要）
 // デバッグ用：削除可能
 // ===================================================
 
@@ -1096,7 +1096,7 @@ void myTask(void *pvParam) {
   while (1) {
     // --- 既存の処理 ---
 
-    // &#x2193; ここに挿入 ---------------------------------
+    // v ここに挿入 ---------------------------------
     // デバッグ用：削除可能
     UBaseType_t waterMarkBytes = uxTaskGetStackHighWaterMark(NULL); // 戻り値はバイト数
     Serial.printf("[STACK] %s: min remaining = %u bytes\\n",
@@ -1114,10 +1114,10 @@ void myTask(void *pvParam) {
 xTaskCreateUniversal(
   myTask,
   "myTask",
-  4096,    // &#x2190; バイト数を増やす（余裕を持って 2?4 倍に）
+  4096,    // <- バイト数を増やす（余裕を持って 2?4 倍に）
   NULL,
   1,
-  &myTaskHandle  // &#x2190; ハンドルを保存（診断に使う）
+  &myTaskHandle  // <- ハンドルを保存（診断に使う）
 , tskNO_AFFINITY);`
 },
 
@@ -1140,7 +1140,7 @@ r_brownout: {
 void setup() {
   Serial.begin(115200);
 
-  // &#x2193; ここに挿入 ---------------------------------
+  // v ここに挿入 ---------------------------------
   // デバッグ用：削除可能
   esp_reset_reason_t reason = esp_reset_reason();
   const char* names[] = {
@@ -1153,7 +1153,7 @@ void setup() {
   }
   // ---------------------------------------------
 
-  // &#x2193; 既存の初期化はここより下（変更不要）
+  // v 既存の初期化はここより下（変更不要）
 }`
 },
 
@@ -1173,7 +1173,7 @@ r_null_ptr: {
 // 理由：NULL チェックなしで使うと即 Guru Meditation
 // ===================================================
 
-// &#x2193; ここに挿入 -------------------------------------
+// v ここに挿入 -------------------------------------
 void* buf = malloc(1024);
 if (buf == NULL) {
   Serial.println("[ERR] malloc failed! Heap exhausted?");
@@ -1207,13 +1207,13 @@ r_task_return: {
 // OK：vTaskDelete(NULL) を呼ぶ
 // ===================================================
 
-// &#x274C; NG パターン
+// [NG] NG パターン
 void badTask(void *pvParam) {
   doSomething();
-  return; // &#x2192; Guru Meditation or サイレントハング
+  return; // -> Guru Meditation or サイレントハング
 }
 
-// &#x2705; OK パターン1：永続タスク
+// [OK] OK パターン1：永続タスク
 void goodTask1(void *pvParam) {
   while (1) {
     doSomething();
@@ -1222,7 +1222,7 @@ void goodTask1(void *pvParam) {
   // ここには到達しない
 }
 
-// &#x2705; OK パターン2：一度だけ実行して終了
+// [OK] OK パターン2：一度だけ実行して終了
 void goodTask2(void *pvParam) {
   doSomethingOnce();
   vTaskDelete(NULL); // 自分自身を正常に削除
@@ -1244,19 +1244,19 @@ r_twdt: {
 // 【修正位置】タスク内のループ・重い処理
 // ===================================================
 
-// &#x274C; NG: delay() はスケジューラに制御を返さない
+// [NG] NG: delay() はスケジューラに制御を返さない
 void badTask(void *pvParam) {
   while (1) {
     heavyProcess();
-    delay(1000); // &#x2190; WDT がトリップする
+    delay(1000); // <- WDT がトリップする
   }
 }
 
-// &#x2705; OK: vTaskDelay() を使う
+// [OK] OK: vTaskDelay() を使う
 void goodTask(void *pvParam) {
   while (1) {
     heavyProcess();
-    vTaskDelay(pdMS_TO_TICKS(1000)); // &#x2190; スケジューラに制御を返す
+    vTaskDelay(pdMS_TO_TICKS(1000)); // <- スケジューラに制御を返す
   }
 }
 
@@ -1290,9 +1290,9 @@ r_iwdt: {
 
 TaskHandle_t workerHandle = NULL;
 
-// &#x2705; 正しい ISR パターン：通知のみ行う
+// [OK] 正しい ISR パターン：通知のみ行う
 void IRAM_ATTR myISR() {
-  // &#x2193; ISR の中身のみ修正（関数名・attachInterrupt は変えない）
+  // v ISR の中身のみ修正（関数名・attachInterrupt は変えない）
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   vTaskNotifyGiveFromISR(workerHandle, &xHigherPriorityTaskWoken);
   portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
@@ -1327,7 +1327,7 @@ r_wdt_generic: {
 // ===================================================
 void setup() {
   Serial.begin(115200);
-  // &#x2193; ここに挿入
+  // v ここに挿入
   // デバッグ用：削除可能
   esp_reset_reason_t r = esp_reset_reason();
   Serial.printf("[RESET] reason=%d (%s)\\n", r,
@@ -1353,7 +1353,7 @@ void setup() {
   Serial.begin(115200);
   delay(100); // シリアル安定待ち
 
-  // &#x2193; ここに挿入 ---------------------------------
+  // v ここに挿入 ---------------------------------
   // デバッグ用：削除可能
   esp_reset_reason_t reason = esp_reset_reason();
   const char* resetNames[] = {
@@ -1367,7 +1367,7 @@ void setup() {
   Serial.printf("[HEAP] Free at boot: %u bytes\\n", ESP.getFreeHeap());
   // ---------------------------------------------
 
-  // &#x2193; 既存の初期化はここより下（変更不要）
+  // v 既存の初期化はここより下（変更不要）
 }`
 },
 
@@ -1393,7 +1393,7 @@ SemaphoreHandle_t mtx = NULL; // NULL で初期化必須
 void setup() {
   Serial.begin(115200);
 
-  // &#x2193; ここに挿入 ---------------------------------
+  // v ここに挿入 ---------------------------------
   mtx = xSemaphoreCreateMutex();
   if (mtx == NULL) {
     Serial.println("[ERR] Mutex create failed!");
@@ -1411,11 +1411,11 @@ void setup() {
 // ===================================================
 void taskA(void *pvParam) {
   while (1) {
-    // &#x2193; Take &#x2192; 処理 &#x2192; Give のペア（必ずセットで）
+    // v Take -> 処理 -> Give のペア（必ずセットで）
     if (xSemaphoreTake(mtx, pdMS_TO_TICKS(1000)) == pdTRUE) {
       // 共有リソースへのアクセス（ここだけ修正）
       sharedData++;
-      xSemaphoreGive(mtx); // &#x2190; 絶対に忘れない
+      xSemaphoreGive(mtx); // <- 絶対に忘れない
     } else {
       Serial.println("[WARN] Mutex timeout! Possible deadlock?");
     }
@@ -1423,11 +1423,11 @@ void taskA(void *pvParam) {
   }
 }
 
-// &#x274C; よくある NG パターン
-// 1. NULL のまま使う    &#x2192; xSemaphoreTake(NULL, ...) &#x2192; クラッシュ
-// 2. Give を忘れる     &#x2192; デッドロック
-// 3. early return で Give 忘れ &#x2192; デッドロック
-// 4. xTaskCreateUniversal より後に生成 &#x2192; タスクが NULL の Mutex を使う`
+// [NG] よくある NG パターン
+// 1. NULL のまま使う    -> xSemaphoreTake(NULL, ...) -> クラッシュ
+// 2. Give を忘れる     -> デッドロック
+// 3. early return で Give 忘れ -> デッドロック
+// 4. xTaskCreateUniversal より後に生成 -> タスクが NULL の Mutex を使う`
 },
 
 r_race_memory: {
@@ -1494,7 +1494,7 @@ void setup() {
   Serial.begin(115200);
   Wire.begin(21, 22);
 
-  // &#x2193; ここに挿入 ---------------------------------
+  // v ここに挿入 ---------------------------------
   i2cMtx = xSemaphoreCreateMutex();
   if (i2cMtx == NULL) {
     Serial.println("[ERR] I2C Mutex create failed!");
@@ -1593,7 +1593,7 @@ portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
 
 // ISR：最小限の処理のみ
 void IRAM_ATTR myISR() {
-  // &#x2193; ISR の内部のみ修正
+  // v ISR の内部のみ修正
   portENTER_CRITICAL_ISR(&mux);
   isrFlag = true;
   isrData = readHardwareRegister();
@@ -1630,19 +1630,19 @@ r_volatile_missing: {
   code: `// ===================================================
 // 【修正位置】グローバル変数の宣言部分
 // -------------------------------------------------
-// &#x2193; 既存のコードを修正（volatile を追加するだけ）
+// v 既存のコードを修正（volatile を追加するだけ）
 // ===================================================
 
-// &#x274C; NG: volatile なし
+// [NG] NG: volatile なし
 bool isrTriggered = false;
 uint32_t sensorValue = 0;
 
-// &#x2705; OK: volatile あり
+// [OK] OK: volatile あり
 volatile bool isrTriggered = false;
 volatile uint32_t sensorValue = 0;
 
 // 注意：uint32_t の Read-Modify-Write はアトミックではない
-// &#x2192; インクリメント等は portENTER_CRITICAL でも保護すること`
+// -> インクリメント等は portENTER_CRITICAL でも保護すること`
 },
 
 r_stack_smash: {
@@ -1659,21 +1659,21 @@ r_stack_smash: {
 // 【修正位置】タスク関数内の大きなローカル変数宣言
 // ===================================================
 
-// &#x274C; NG: スタック上に大きな配列（スタック破壊の元凶）
+// [NG] NG: スタック上に大きな配列（スタック破壊の元凶）
 void badTask(void *pv) {
-  uint8_t buf[2048]; // &#x2190; 2KB がスタックに乗る &#x2192; 破壊
+  uint8_t buf[2048]; // <- 2KB がスタックに乗る -> 破壊
   process(buf);
   vTaskDelay(pdMS_TO_TICKS(100));
 }
 
-// &#x2705; OK パターン1: static にする（スタックに乗らない）
+// [OK] OK パターン1: static にする（スタックに乗らない）
 void goodTask1(void *pv) {
-  static uint8_t buf[2048]; // static &#x2192; BSS セクションに配置
+  static uint8_t buf[2048]; // static -> BSS セクションに配置
   process(buf);
   vTaskDelay(pdMS_TO_TICKS(100));
 }
 
-// &#x2705; OK パターン2: ヒープに確保する
+// [OK] OK パターン2: ヒープに確保する
 void goodTask2(void *pv) {
   uint8_t *buf = (uint8_t*)malloc(2048);
   if (buf) {
@@ -1701,7 +1701,7 @@ r_isr_iram: {
 // 【修正位置】ISR 関数の宣言（IRAM_ATTR を追加）
 // ===================================================
 
-// &#x274C; NG: ISR 内での禁止操作
+// [NG] NG: ISR 内での禁止操作
 void badISR() {
   Serial.println("triggered");  // NG: ブロッキング
   delay(10);                    // NG: スケジューラ停止
@@ -1709,7 +1709,7 @@ void badISR() {
   malloc(64);                   // NG: 内部Mutex使用
 }
 
-// &#x2705; OK: 全呼び出し経路に IRAM_ATTR + volatile
+// [OK] OK: 全呼び出し経路に IRAM_ATTR + volatile
 volatile bool isrFlag = false;  // volatile 必須
 volatile uint32_t isrTs = 0;    // 共有変数は volatile
 
@@ -1743,12 +1743,12 @@ r_array_oob: {
 #define BUF_SIZE 64
 uint8_t buf[BUF_SIZE];
 
-// &#x274C; NG: 境界チェックなし
+// [NG] NG: 境界チェックなし
 void writeToBuf(int idx, uint8_t val) {
   buf[idx] = val; // idx >= 64 だとメモリ破壊
 }
 
-// &#x2705; OK: 境界チェックあり
+// [OK] OK: 境界チェックあり
 void writeToBufSafe(int idx, uint8_t val) {
   if (idx < 0 || idx >= BUF_SIZE) {
     // デバッグ用：削除可能
@@ -1826,18 +1826,18 @@ void setup() {
   xTaskCreateUniversal(taskB, "B", 2048, NULL, 1, NULL, tskNO_AFFINITY);
 }
 
-// &#x274C; NG: 取得順序が逆でデッドロック
+// [NG] NG: 取得順序が逆でデッドロック
 void taskA(void *pv) {
   while(1) {
-    xSemaphoreTake(mtxA, portMAX_DELAY); // A &#x2192; B の順
-    xSemaphoreTake(mtxB, portMAX_DELAY); // &#x2190; B 側は B&#x2192;A でデッドロック
+    xSemaphoreTake(mtxA, portMAX_DELAY); // A -> B の順
+    xSemaphoreTake(mtxB, portMAX_DELAY); // <- B 側は B->A でデッドロック
     /* 処理 */
     xSemaphoreGive(mtxB); xSemaphoreGive(mtxA);
     vTaskDelay(10);
   }
 }
 
-// &#x2705; OK: 全タスクで取得順序を統一（A &#x2192; B）
+// [OK] OK: 全タスクで取得順序を統一（A -> B）
 void taskB_fixed(void *pv) {
   while(1) {
     // タイムアウト付きで Take（デッドロック検出）
@@ -1878,7 +1878,7 @@ SemaphoreHandle_t sem = NULL; // NULL で初期化必須
 void setup() {
   Serial.begin(115200);
 
-  // &#x2193; ここに挿入 ---------------------------------
+  // v ここに挿入 ---------------------------------
   // Mutex（相互排除）
   sem = xSemaphoreCreateMutex();
   // または バイナリ Semaphore（タスク同期・ISR通知）
@@ -1892,17 +1892,17 @@ void setup() {
   xTaskCreateUniversal(workerTask, "worker", 2048, NULL, 1, NULL, tskNO_AFFINITY);
 }
 
-// &#x274C; NG パターン集
+// [NG] NG パターン集
 void ngPatterns() {
-  // 1. NULL チェックなし &#x2192; NULL で Take &#x2192; クラッシュ
+  // 1. NULL チェックなし -> NULL で Take -> クラッシュ
   // xSemaphoreTake(sem, portMAX_DELAY); // sem が NULL の場合
 
   // 2. Give 忘れ
   // xSemaphoreTake(sem, 1000);
-  // if (error) return; // &#x2190; Give を忘れてデッドロック
+  // if (error) return; // <- Give を忘れてデッドロック
 }
 
-// &#x2705; OK パターン
+// [OK] OK パターン
 void safeUse(void *pv) {
   while(1) {
     if (xSemaphoreTake(sem, pdMS_TO_TICKS(1000)) == pdTRUE) {
@@ -1936,7 +1936,7 @@ TaskHandle_t task2Handle = NULL;
 
 void setup() {
   Serial.begin(115200);
-  // &#x2193; xTaskCreateUniversal の第5引数にハンドルを渡す（既存コードを修正）
+  // v xTaskCreateUniversal の第5引数にハンドルを渡す（既存コードを修正）
   xTaskCreateUniversal(task1, "task1", 4096, NULL, 1, &task1Handle, tskNO_AFFINITY);
   xTaskCreateUniversal(task2, "task2", 4096, NULL, 1, &task2Handle, tskNO_AFFINITY);
 }
@@ -1998,7 +1998,7 @@ SemaphoreHandle_t resMtx = NULL;
 void setup() {
   Serial.begin(115200);
 
-  resMtx = xSemaphoreCreateMutex(); // &#x2190; Mutex を使う（優先度継承あり）
+  resMtx = xSemaphoreCreateMutex(); // <- Mutex を使う（優先度継承あり）
   if (!resMtx) { while(1) delay(100); }
 
   xTaskCreateUniversal(highPrioTask, "high", 2048, NULL, 10, NULL, tskNO_AFFINITY); // 高優先度
@@ -2033,7 +2033,7 @@ r_heap_leak: {
 // ===================================================
 
 void loop() {
-  // &#x2193; ここに挿入 ---------------------------------
+  // v ここに挿入 ---------------------------------
   // デバッグ用：削除可能
   static uint32_t lastHeap = 0;
   uint32_t freeHeap = ESP.getFreeHeap();
@@ -2044,10 +2044,10 @@ void loop() {
   lastHeap = freeHeap;
   // ---------------------------------------------
 
-  // &#x2193; 既存のコードはここより下（変更不要）
+  // v 既存のコードはここより下（変更不要）
 }
 
-// &#x2705; free 漏れなしパターン
+// [OK] free 漏れなしパターン
 uint8_t* safeMalloc(size_t size) {
   uint8_t* p = (uint8_t*)malloc(size);
   if (!p) {
@@ -2081,14 +2081,14 @@ r_heap_leak_cpp: {
 // 【修正位置】new/delete の使用箇所
 // ===================================================
 
-// &#x274C; NG: new で確保して delete を忘れる
+// [NG] NG: new で確保して delete を忘れる
 void badAlloc() {
   MyClass* obj = new MyClass();
   obj->doWork();
-  // delete obj; &#x2190; 忘れる &#x2192; リーク
+  // delete obj; <- 忘れる -> リーク
 }
 
-// &#x2705; OK パターン1: 明示的に delete
+// [OK] OK パターン1: 明示的に delete
 void goodAlloc() {
   MyClass* obj = new MyClass();
   if (!obj) return;
@@ -2097,7 +2097,7 @@ void goodAlloc() {
   obj = nullptr;
 }
 
-// &#x2705; OK パターン2: 配列は delete[]
+// [OK] OK パターン2: 配列は delete[]
 void goodArrayAlloc() {
   uint8_t* arr = new uint8_t[256];
   if (!arr) return;
@@ -2121,7 +2121,7 @@ r_task_leak: {
 // 【挿入位置】タスク生成・削除の管理
 // ===================================================
 
-// &#x2705; タスクを動的に生成・削除する場合
+// [OK] タスクを動的に生成・削除する場合
 TaskHandle_t dynamicTaskHandle = NULL;
 
 void startDynamicTask() {
@@ -2169,7 +2169,7 @@ r_heap_fragment: {
 // ===================================================
 
 void loop() {
-  // &#x2193; ここに挿入 ---------------------------------
+  // v ここに挿入 ---------------------------------
   // デバッグ用：削除可能
   static uint32_t tick = 0;
   if (++tick % 60 == 0) { // 60回に1回（約60秒ごと）
@@ -2185,14 +2185,14 @@ void loop() {
   }
   // ---------------------------------------------
 
-  // &#x2193; 既存のコードはここより下（変更不要）
+  // v 既存のコードはここより下（変更不要）
   delay(1000);
 }
 
 // String.reserve() で断片化を軽減する例
 void buildMessage() {
   String msg;
-  msg.reserve(128); // &#x2190; 最初にバッファ確保（再アロケーション防止）
+  msg.reserve(128); // <- 最初にバッファ確保（再アロケーション防止）
   msg += "Temp: ";
   msg += temperature;
   msg += " Hum: ";
@@ -2222,7 +2222,7 @@ r_string_frag: {
 // 【修正位置】String を使っている箇所
 // ===================================================
 
-// &#x274C; NG: String の多重連結（ヒープを何度も確保・解放）
+// [NG] NG: String の多重連結（ヒープを何度も確保・解放）
 void badString() {
   String msg = "Temp: ";
   msg += temperature;     // 確保
@@ -2231,7 +2231,7 @@ void badString() {
   Serial.println(msg);
 }
 
-// &#x2705; OK: char 配列 + snprintf（1回だけ確保）
+// [OK] OK: char 配列 + snprintf（1回だけ確保）
 void goodString() {
   char msg[64]; // スタック上に固定長で確保
   snprintf(msg, sizeof(msg), "Temp: %.1f Hum: %.1f",
@@ -2239,7 +2239,7 @@ void goodString() {
   Serial.println(msg);
 }
 
-// &#x2705; Serial.printf を直接使う（最もシンプル）
+// [OK] Serial.printf を直接使う（最もシンプル）
 void bestString() {
   Serial.printf("Temp: %.1f Hum: %.1f\\n", temperature, humidity);
 }`
@@ -2320,9 +2320,9 @@ void myTask(void *pv) {
 // GPIO でタイミングをロジアナ計測する方法
 // #define DBG_PIN 2
 // void criticalSection() {
-//   digitalWrite(DBG_PIN, HIGH); // &#x2190; ここから
+//   digitalWrite(DBG_PIN, HIGH); // <- ここから
 //   heavyWork();
-//   digitalWrite(DBG_PIN, LOW);  // &#x2190; ここまで
+//   digitalWrite(DBG_PIN, LOW);  // <- ここまで
 // }`
 },
 
@@ -2343,7 +2343,7 @@ r_wifi_connect: {
 void setup() {
   Serial.begin(115200);
 
-  // &#x2193; ここに挿入 ---------------------------------
+  // v ここに挿入 ---------------------------------
   // Wi-Fi イベントハンドラ登録（デバッグ用：削除可能）
   WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t info) {
     switch(event) {
@@ -2384,7 +2384,7 @@ WiFiUDP udp; // グローバルに1つだけ宣言（ソケットリーク防止
 
 void setup() {
   Serial.begin(115200);
-  WiFi.setSleep(false); // &#x2190; ARP タイムアウト防止に重要
+  WiFi.setSleep(false); // <- ARP タイムアウト防止に重要
   WiFi.begin(SSID, PASS);
   while (WiFi.status() != WL_CONNECTED) delay(500);
 
@@ -2392,7 +2392,7 @@ void setup() {
 }
 
 void loop() {
-  // &#x2193; ここに挿入: UDP キープアライブ（デバッグ用）
+  // v ここに挿入: UDP キープアライブ（デバッグ用）
   static uint32_t lastKeepalive = 0;
   if (millis() - lastKeepalive > 30000) { // 30秒ごと
     udp.beginPacket(REMOTE_IP, REMOTE_PORT);
@@ -2419,10 +2419,10 @@ r_udp_sleep: {
 // ===================================================
 void setup() {
   Serial.begin(115200);
-  WiFi.setSleep(false); // &#x2190; ここに挿入（デフォルトは Modem Sleep）
+  WiFi.setSleep(false); // <- ここに挿入（デフォルトは Modem Sleep）
   WiFi.begin(SSID, PASS);
   while (WiFi.status() != WL_CONNECTED) delay(500);
-  // &#x2193; 既存のコードはここより下（変更不要）
+  // v 既存のコードはここより下（変更不要）
 }`
 },
 
@@ -2439,21 +2439,21 @@ r_udp_leak: {
 // 【修正位置】WiFiUDP の宣言と begin() の位置
 // ===================================================
 
-// &#x2705; OK: グローバルに1つだけ（ファイル先頭）
+// [OK] OK: グローバルに1つだけ（ファイル先頭）
 WiFiUDP udp;
 
 void setup() {
   WiFi.begin(SSID, PASS);
   while (WiFi.status() != WL_CONNECTED) delay(500);
-  udp.begin(LOCAL_PORT); // &#x2190; setup() で1回だけ
+  udp.begin(LOCAL_PORT); // <- setup() で1回だけ
 }
 
 void loop() {
-  // &#x274C; NG: loop() 内で begin() を繰り返す &#x2192; ソケットリーク
-  // WiFiUDP udp;   &#x2190; ローカル変数も NG
+  // [NG] NG: loop() 内で begin() を繰り返す -> ソケットリーク
+  // WiFiUDP udp;   <- ローカル変数も NG
   // udp.begin(PORT);
 
-  // &#x2705; 既存の udp オブジェクトをそのまま使う
+  // [OK] 既存の udp オブジェクトをそのまま使う
   udp.beginPacket(REMOTE_IP, REMOTE_PORT);
   udp.print("data");
   udp.endPacket();
@@ -2495,7 +2495,7 @@ r_wifi_degradation: {
 // デバッグ用：削除可能
 // ===================================================
 void loop() {
-  // &#x2193; ここに挿入 ---------------------------------
+  // v ここに挿入 ---------------------------------
   static uint32_t wifiRetryMs = 0;
   if (WiFi.status() != WL_CONNECTED) {
     if (millis() - wifiRetryMs > 10000) { // 10秒ごとに再試行
@@ -2513,7 +2513,7 @@ void loop() {
   }
   // ---------------------------------------------
 
-  // &#x2193; 既存のコードはここより下（変更不要）
+  // v 既存のコードはここより下（変更不要）
 }`
 },
 
@@ -2532,10 +2532,10 @@ r_adc_wifi: {
 // ===================================================
 
 // ADC ピンの確認
-// ADC1: GPIO32,33,34,35,36,39 &#x2192; Wi-Fi使用中でも使える
-// ADC2: GPIO0,2,4,12,13,14,15,25,26,27 &#x2192; Wi-Fi使用中は使えない
+// ADC1: GPIO32,33,34,35,36,39 -> Wi-Fi使用中でも使える
+// ADC2: GPIO0,2,4,12,13,14,15,25,26,27 -> Wi-Fi使用中は使えない
 
-// &#x2705; 平均化読み取り関数（既存の analogRead を置き換え）
+// [OK] 平均化読み取り関数（既存の analogRead を置き換え）
 int readADCAverage(uint8_t pin, int samples = 16) {
   long sum = 0;
   for (int i = 0; i < samples; i++) {
@@ -2547,7 +2547,7 @@ int readADCAverage(uint8_t pin, int samples = 16) {
 
 void loop() {
   // 既存: int val = analogRead(34);
-  // &#x2193; 変更後:
+  // v 変更後:
   int val = readADCAverage(34, 16); // 16回平均
   Serial.printf("[ADC] val=%d (%.2fV)\\n",
     val, val * 3.3f / 4095.0f);
@@ -2574,7 +2574,7 @@ void setup() {
   Serial.begin(115200);
   Wire.begin(21, 22); // SDA, SCL
 
-  // &#x2193; I2C スキャン（デバッグ用：削除可能）
+  // v I2C スキャン（デバッグ用：削除可能）
   Serial.println("[I2C] Scanning 100kHz...");
   Wire.setClock(100000);
   int found = 0;
@@ -2617,12 +2617,12 @@ void setup() {
   Serial.begin(115200);
   Wire.begin(21, 22);
 
-  // &#x2193; ここに追加（既存の Wire.begin の直後）
+  // v ここに追加（既存の Wire.begin の直後）
   Wire.setClock(100000);            // 100kHz に落とす
   Wire.setWireTimeout(3000, true);  // クロックストレッチタイムアウト 3ms
   // ---------------------------------------------
 
-  // &#x2193; 既存のコードはここより下（変更不要）
+  // v 既存のコードはここより下（変更不要）
 }
 
 // エラー検出付き送信
@@ -2674,7 +2674,7 @@ r_i2c_clock: {
 // 【修正位置】Wire.begin() の直後
 // ===================================================
 Wire.begin(21, 22);
-Wire.setClock(100000); // &#x2190; 100kHz に設定（最も遅いデバイスに合わせる）
+Wire.setClock(100000); // <- 100kHz に設定（最も遅いデバイスに合わせる）
 // Wire.setClock(400000); // 400kHz（全デバイスが対応している場合のみ）`
 },
 
@@ -2705,15 +2705,15 @@ r_spi_garbage: {
 // ===================================================
 
 // SPI モード一覧（データシートを確認）
-// MODE0: CPOL=0, CPHA=0 &#x2192; 最も一般的
-// MODE1: CPOL=0, CPHA=1 &#x2192; 一部ADC/DAC
-// MODE2: CPOL=1, CPHA=0 &#x2192; まれ
-// MODE3: CPOL=1, CPHA=1 &#x2192; SDカード・一部フラッシュ
+// MODE0: CPOL=0, CPHA=0 -> 最も一般的
+// MODE1: CPOL=0, CPHA=1 -> 一部ADC/DAC
+// MODE2: CPOL=1, CPHA=0 -> まれ
+// MODE3: CPOL=1, CPHA=1 -> SDカード・一部フラッシュ
 
 #define CS_PIN 5
 #define SPI_FREQ 1000000 // 1MHz（余裕を持って低めに）
 
-SPISettings mySPISettings(SPI_FREQ, MSBFIRST, SPI_MODE0); // &#x2190; MODE を変えて試す
+SPISettings mySPISettings(SPI_FREQ, MSBFIRST, SPI_MODE0); // <- MODE を変えて試す
 
 void spiTransfer(uint8_t *data, size_t len) {
   SPI.beginTransaction(mySPISettings);
@@ -2740,9 +2740,9 @@ r_spi_mode: {
 // ===================================================
 
 // 症状と原因の対応
-// 全ビット1ずれ     &#x2192; CPOL が間違い（MODE0&#x2194;2 or MODE1&#x2194;3）
-// 常に 0x00/0xFF   &#x2192; CS またはクロックが届いていない（配線確認）
-// 最初の1バイトだけ正しい &#x2192; CPHA が間違い
+// 全ビット1ずれ     -> CPOL が間違い（MODE0<->2 or MODE1<->3）
+// 常に 0x00/0xFF   -> CS またはクロックが届いていない（配線確認）
+// 最初の1バイトだけ正しい -> CPHA が間違い
 
 // 4つのモードを順番に試す
 void testAllSPIModes() {
@@ -2783,15 +2783,15 @@ SPISettings dev1Settings(4000000, MSBFIRST, SPI_MODE0); // デバイス1
 SPISettings dev2Settings(1000000, MSBFIRST, SPI_MODE3); // デバイス2
 
 void readDev1() {
-  SPI.beginTransaction(dev1Settings); // &#x2190; 必ずペアで
+  SPI.beginTransaction(dev1Settings); // <- 必ずペアで
   digitalWrite(CS_DEV1, LOW);
   uint8_t result = SPI.transfer(0x00);
   digitalWrite(CS_DEV1, HIGH);
-  SPI.endTransaction(); // &#x2190; ここで解放
+  SPI.endTransaction(); // <- ここで解放
 }
 
 void readDev2() {
-  SPI.beginTransaction(dev2Settings); // &#x2190; 別の設定で再開
+  SPI.beginTransaction(dev2Settings); // <- 別の設定で再開
   digitalWrite(CS_DEV2, LOW);
   uint8_t result = SPI.transfer(0x00);
   digitalWrite(CS_DEV2, HIGH);
@@ -2819,10 +2819,10 @@ r_spi_gpio12: {
 SPIClass hspi(HSPI);
 
 void setup() {
-  // &#x274C; NG: デフォルトの MISO=12 は使わない
+  // [NG] NG: デフォルトの MISO=12 は使わない
   // hspi.begin();
 
-  // &#x2705; OK: MISO を GPIO12 以外に変更
+  // [OK] OK: MISO を GPIO12 以外に変更
   hspi.begin(14, 25, 13, SS); // SCK=14, MISO=25, MOSI=13
 }`
 },
@@ -2837,7 +2837,7 @@ r_spi_clock: {
     '1MHz から始めて徐々に上げながら動作確認する'
   ],
   code: `SPISettings safe(1000000, MSBFIRST, SPI_MODE0); // 1MHz から試す
-// 動作確認後に 4MHz &#x2192; 8MHz と上げていく`
+// 動作確認後に 4MHz -> 8MHz と上げていく`
 },
 
 r_uart_baud: {
@@ -2854,16 +2854,16 @@ r_uart_baud: {
 // 【修正位置】Serial.begin() のボーレート設定
 // ===================================================
 
-// &#x2705; 誤差ゼロのボーレート（推奨）
+// [OK] 誤差ゼロのボーレート（推奨）
 // 9600, 19200, 38400, 115200, 230400, 460800, 921600
 
 // APB 80MHz との割り切り誤差
-// 57600   &#x2192; 約 0.8% 誤差（通常は許容範囲だが長距離では注意）
-// 76800   &#x2192; 約 1.0% 誤差
-// 256000  &#x2192; 約 0.16% 誤差
+// 57600   -> 約 0.8% 誤差（通常は許容範囲だが長距離では注意）
+// 76800   -> 約 1.0% 誤差
+// 256000  -> 約 0.16% 誤差
 
 Serial2.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN); // 誤差ゼロ
-// Serial2.begin(57600, ...); &#x2190; 長距離では避ける`
+// Serial2.begin(57600, ...); <- 長距離では避ける`
 },
 
 r_uart_format: {
@@ -2890,8 +2890,8 @@ Serial2.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN);
 // Serial2.begin(9600, SERIAL_8N2, RX_PIN, TX_PIN);
 
 // データビット不一致の症状
-// 7bit送信&#x2192;8bit受信: MSB が常に1になる（0x41&#x2192;0xC1）
-// ボーレート不一致: サンプリングポイントがずれる（0x41&#x2192;0x21 等）`
+// 7bit送信->8bit受信: MSB が常に1になる（0x41->0xC1）
+// ボーレート不一致: サンプリングポイントがずれる（0x41->0x21 等）`
 },
 
 r_uart_framing: {
@@ -2918,7 +2918,7 @@ void loop() {
     lastByteMs = millis();
     if (rxIdx >= sizeof(rxBuf)) rxIdx = 0; // オーバーフロー防止
   }
-  // 5ms 無受信 &#x2192; パケット完了とみなす
+  // 5ms 無受信 -> パケット完了とみなす
   if (rxIdx > 0 && millis() - lastByteMs > 5) {
     processPacket(rxBuf, rxIdx);
     rxIdx = 0;
@@ -2955,13 +2955,13 @@ r_uart1_pins: {
 // 【修正位置】Serial1.begin() の呼び出し
 // ===================================================
 
-// &#x274C; NG: デフォルトピン（GPIO9/10）は Flash と競合
+// [NG] NG: デフォルトピン（GPIO9/10）は Flash と競合
 // Serial1.begin(9600);
 
-// &#x2705; OK: ピンを明示的に再マッピング
+// [OK] OK: ピンを明示的に再マッピング
 Serial1.begin(9600, SERIAL_8N1, 25, 26); // RX=25, TX=26
 
-// &#x2705; より推奨: Serial2 を外部機器との通信に使う
+// [OK] より推奨: Serial2 を外部機器との通信に使う
 // UART2 デフォルト: RX=GPIO16, TX=GPIO17
 Serial2.begin(9600, SERIAL_8N1, 16, 17);`
 },
@@ -2982,7 +2982,7 @@ void setup() {
   Serial.begin(115200);
   delay(500); // 起動ゴミデータが終わるのを待つ
 
-  // &#x2193; 受信バッファをフラッシュ（デバッグ用：削除可能）
+  // v 受信バッファをフラッシュ（デバッグ用：削除可能）
   while (Serial.available()) Serial.read();
 
   // 外部機器との通信は Serial2 を推奨
@@ -3011,9 +3011,9 @@ r_uart_rx: {
     '送信側の TX を受信側の RX に接続する（交差接続）',
     'Serial.begin(baud, config, RX_PIN, TX_PIN) でピンを明示する'
   ],
-  code: `// 送信側 TX &#x2192; 受信側 RX（クロス接続）
-// ESP32 RX(16) &#x2190; 相手機器 TX
-// ESP32 TX(17) &#x2192; 相手機器 RX
+  code: `// 送信側 TX -> 受信側 RX（クロス接続）
+// ESP32 RX(16) <- 相手機器 TX
+// ESP32 TX(17) -> 相手機器 RX
 Serial2.begin(9600, SERIAL_8N1, 16, 17); // RX=16, TX=17`
 },
 
@@ -3133,14 +3133,14 @@ r_isr_bad_call: {
     'ISR から xTaskNotifyFromISR / xQueueSendFromISR でタスクに通知する',
     '重い処理はタスク側で行う'
   ],
-  code: `// &#x274C; NG: ISR 内での禁止関数
+  code: `// [NG] NG: ISR 内での禁止関数
 void IRAM_ATTR badISR() {
-  Serial.println("triggered"); // &#x2190; NG: ブロッキング
-  delay(10);                   // &#x2190; NG: スケジューラ停止
-  Wire.read();                 // &#x2190; NG: Mutex 使用
+  Serial.println("triggered"); // <- NG: ブロッキング
+  delay(10);                   // <- NG: スケジューラ停止
+  Wire.read();                 // <- NG: Mutex 使用
 }
 
-// &#x2705; OK: フラグだけ立てる
+// [OK] OK: フラグだけ立てる
 volatile bool isrFlag = false;
 void IRAM_ATTR goodISR() {
   isrFlag = true; // これだけ
@@ -3193,7 +3193,7 @@ r_isr_notification: {
   title: 'ISR からタスクへの通知（正しい実装）',
   cause: '既に正しい方向性です。ISR から Task Notification または Queue を使ってタスクに通知する実装を確認します。',
   tip: 'これは正しい設計パターンです。',
-  code: `// &#x2705; ISR &#x2192; Task Notification（最もシンプル・高速）
+  code: `// [OK] ISR -> Task Notification（最もシンプル・高速）
 TaskHandle_t taskHandle = NULL;
 
 void IRAM_ATTR myISR() {
@@ -3210,7 +3210,7 @@ void myTask(void *pv) {
   }
 }
 
-// &#x2705; ISR &#x2192; Queue（データも渡したい場合）
+// [OK] ISR -> Queue（データも渡したい場合）
 QueueHandle_t isrQueue = NULL;
 
 void IRAM_ATTR dataISR() {
@@ -3239,13 +3239,13 @@ r_floating_pin: {
 // 【修正位置】pinMode の設定
 // ===================================================
 
-// &#x274C; NG: INPUT のままではフロート
+// [NG] NG: INPUT のままではフロート
 pinMode(buttonPin, INPUT);
 
-// &#x2705; OK: 内部プルアップを使う（スイッチが GND に繋がっている場合）
+// [OK] OK: 内部プルアップを使う（スイッチが GND に繋がっている場合）
 pinMode(buttonPin, INPUT_PULLUP);
 
-// &#x2705; OK: 内部プルダウンを使う（スイッチが 3.3V に繋がっている場合）
+// [OK] OK: 内部プルダウンを使う（スイッチが 3.3V に繋がっている場合）
 pinMode(buttonPin, INPUT_PULLDOWN);
 
 // 注意: GPIO34?39 は内部プルアップ/ダウンなし（外部抵抗が必要）`
@@ -3392,7 +3392,7 @@ uint32_t t = millis();
 while (WiFi.status() != WL_CONNECTED) {
   if (millis() - t > 10000) {
     Serial.println("[WiFi] Connection timeout!");
-    break; // タイムアウト &#x2192; setup を継続
+    break; // タイムアウト -> setup を継続
   }
   delay(500);
 }`
@@ -3713,14 +3713,14 @@ r_lib_conflict: {
 // ===================================================
 
 // STEP 1: 全ライブラリをコメントアウトした最小構成でテスト
-// #include <SomeLibA.h>   // &#x2190; コメントアウト
-// #include <SomeLibB.h>   // &#x2190; コメントアウト
+// #include <SomeLibA.h>   // <- コメントアウト
+// #include <SomeLibB.h>   // <- コメントアウト
 #include <Arduino.h>
 
 void setup() {
   Serial.begin(115200);
   Serial.println("[TEST] Minimal sketch OK");
-  // 問題が再現しなければ &#x2192; ライブラリが原因
+  // 問題が再現しなければ -> ライブラリが原因
 
   // STEP 2: 1つずつ有効化して再現タイミングを特定
 }
