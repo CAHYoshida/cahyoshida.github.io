@@ -3871,7 +3871,7 @@ let logAnalyzerOpen = false;
 function toggleLogAnalyzer() {
   logAnalyzerOpen = !logAnalyzerOpen;
   document.getElementById('log-analyzer-body').style.display = logAnalyzerOpen ? 'block' : 'none';
-  document.getElementById('log-analyzer-toggle').textContent = logAnalyzerOpen ? '&#x25B2; 閉じる' : '&#x25BC; 開く';
+  document.getElementById('log-analyzer-toggle').innerHTML = logAnalyzerOpen ? '&#x25B2; 閉じる' : '&#x25BC; 開く';
 }
 
 const LOG_PATTERNS = [
@@ -3931,7 +3931,7 @@ function analyzeLog() {
       currentNodeId = m.node;
       logAnalyzerOpen = false;
       document.getElementById('log-analyzer-body').style.display = 'none';
-      document.getElementById('log-analyzer-toggle').textContent = '&#x25BC; 開く';
+      document.getElementById('log-analyzer-toggle').innerHTML = '&#x25BC; 開く';
       render();
     };
     resultsEl.appendChild(el);
@@ -3972,7 +3972,7 @@ function renderQuestion(id, node) {
   node.choices.forEach(c => {
     const btn = document.createElement('button');
     btn.className = 'choice-btn';
-    btn.textContent = c.label;
+    btn.innerHTML = c.label;
     btn.onclick = () => navigate(c.next, c.label);
     list.appendChild(btn);
   });
@@ -4013,7 +4013,7 @@ function renderResult(id, node) {
     copyBtn.textContent = 'COPY';
     copyBtn.onclick = () => {
       navigator.clipboard.writeText(node.code).then(() => {
-        copyBtn.textContent = 'COPIED &#x2713;';
+        copyBtn.innerHTML = 'COPIED &#x2713;';
         copyBtn.classList.add('copied');
         setTimeout(() => { copyBtn.textContent = 'COPY'; copyBtn.classList.remove('copied'); }, 2000);
       }).catch(() => {
@@ -4024,7 +4024,7 @@ function renderResult(id, node) {
         ta.select();
         document.execCommand('copy');
         document.body.removeChild(ta);
-        copyBtn.textContent = 'COPIED &#x2713;';
+        copyBtn.innerHTML = 'COPIED &#x2713;';
         copyBtn.classList.add('copied');
         setTimeout(() => { copyBtn.textContent = 'COPY'; copyBtn.classList.remove('copied'); }, 2000);
       });
@@ -4039,7 +4039,7 @@ function renderResult(id, node) {
   chipBtn.className = 'choice-btn';
   chipBtn.style.marginTop = '10px';
   chipBtn.style.fontSize = '0.8rem';
-  chipBtn.textContent = '&#x1F50C; チップ別の差異・制約を確認する';
+  chipBtn.innerHTML = '&#x1F50C; チップ別の差異・制約を確認する';
   chipBtn.onclick = () => navigate('r_chip_differences', 'チップ別差異');
   el.appendChild(chipBtn);
   el.appendChild(buildNavRow());
@@ -4096,7 +4096,7 @@ function updateBreadcrumb() {
   history.forEach((h, i) => {
     bc.appendChild(Object.assign(document.createElement('span'), {textContent: ' &#x203A; '}));
     const crumb = document.createElement('span');
-    const shortLabel = h.label.replace(/^[^\s]+ /, '').substring(0, 20);
+    const shortLabel = h.label.replace(/&#x[0-9A-Fa-f]+;/g, '').trim().substring(0, 20);
     crumb.textContent = shortLabel;
     if (i < history.length - 1) {
       crumb.className = 'crumb';
