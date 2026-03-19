@@ -4094,7 +4094,7 @@ function updateBreadcrumb() {
   rootCrumb.onclick = restart;
   bc.appendChild(rootCrumb);
   history.forEach((h, i) => {
-    bc.appendChild(Object.assign(document.createElement('span'), {textContent: ' &#x203A; '}));
+    const sep = document.createElement('span'); sep.innerHTML = ' &#x203A; '; bc.appendChild(sep);
     const crumb = document.createElement('span');
     const shortLabel = h.label.replace(/&#x[0-9A-Fa-f]+;/g, '').trim().substring(0, 20);
     crumb.textContent = shortLabel;
